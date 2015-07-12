@@ -18,6 +18,11 @@ absolutely positioned container, which is fullscreen relative to its' parent.
 
 
 
+## Dependencies
+
+* Web Animations API
+* HTMLElement.prototype.matches
+* HTMLElement.prototype.closest
 
 
 
