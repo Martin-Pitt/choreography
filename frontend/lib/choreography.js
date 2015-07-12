@@ -57,10 +57,7 @@ var Choreo = {
 	
 	transits: {
 		default: null,
-		list: [
-			{ from: null, to: 'article.intro', transition: { foo: 'intro' } },
-			{ from: 'article.intro', to: 'article.why', transition: { foo: 'intro to why'} }
-		],
+		list: [],
 		
 		find: function(from, to) {
 			if(arguments.length === 1)
