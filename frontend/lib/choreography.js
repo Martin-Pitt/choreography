@@ -46,12 +46,19 @@ var Choreo = {
 		
 		Choreo.Entry(from, to);
 		
+		var context = {
+			from: from,
+			to: to,
+			isReverse: isReverse
+		};
 		var cache = {};
-		var animation = (typeof transition === 'function'? transition(cache): transition.constructor(cache));
+		var animation = (typeof transition === 'function'? transition.call(context, cache): transition.constructor.call(context, cache));
+		// TODO: Test if animation is truthy/valid
 		var player = document.timeline.play(animation);
 		
 		if(isReverse) player.reverse();
 		
+		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
 		player.onfinish = function() {
 			if(transition.exit) transition.exit(cache);
 			Choreo.Exit.call(player, from, to);
@@ -187,7 +194,7 @@ var Choreo = {
 		for (; node; node = node.parentNode) nodes.unshift(node);
 		return nodes;
 	},
-
+	
 	_commonSiblings: function commonSiblings(a, b) {
 		var x = this._parents(a);
 		var y = this._parents(b);
@@ -238,12 +245,14 @@ var Choreo = {
 		},
 		
 		reveal: function(element, direction) {
-
+			
 		}
 	},
 	
 	Preset: {
-		fade: function() {},
+		fade: function() {
+			return Choreo.Animate.fade(this.to, 'in', { duration: 250 });
+		},
 		reveal: function() {}
 	}
 };

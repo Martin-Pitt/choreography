@@ -1,5 +1,5 @@
 /// Setup our default preset
-Choreo.define('default', Choreo.Preset.fadeIn);
+Choreo.define('default', Choreo.Preset.fade);
 
 /// Define animation for our introduction view
 Choreo.define('article.intro', {
