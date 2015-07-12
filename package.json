@@ -1,0 +1,27 @@
+{
+	"name": "choreography",
+	"version": "0.5.0",
+	"description": "View Transitions on the Web using native APIs",
+	"homepage": "http://choreography.io",
+	"keywords": ["choreography", "view transitions", "web animations api"],
+	"author": {
+		"name": "Martin Pitt",
+		"email": "martin.r.pitt@gmail.com",
+		"url": "http://martinpitt.co.uk/"
+	},
+	"contributors": [
+		{
+			"name": "Jeremy Pitt",
+			"email": "jeremy@jnpwebdeveloper.com",
+			"url": "http://www.jnpwebdeveloper.com/"
+		}
+	],
+	
+	"scripts": {
+		"serve": "if hash iojs 2>/dev/null; then iojs .koa.js; else node --harmony .koa.js; fi;"
+	},
+	"dependencies": {
+		"koa": "^0.21.0",
+		"koa-static": "^1.4.9"
+	}
+}
