@@ -1,6 +1,10 @@
 var Choreo = {
 	define: function(what, transition) {
-		if(what === 'default') this.transits.default = transition;
+		if(what === 'default')
+		{
+			this.transits.default = transition;
+			return this;
+		}
 		
 		var transit = {
 			from: null,
@@ -16,6 +20,8 @@ var Choreo = {
 		}
 		
 		this.transits.list.push(transit);
+		
+		return this;
 	},
 	
 	graph: function(from, to) {
@@ -27,7 +33,7 @@ var Choreo = {
 		
 		if(typeof to === 'string') to = document.querySelector(to);
 		if(typeof from === 'string') from = document.querySelector(from);
-		
+
 		var transition = this.transits.find(from, to);
 		var isReverse = false;
 		if(!transition)
@@ -83,6 +89,10 @@ var Choreo = {
 				}
 			}
 			
+			/// We haven't found a transition yet, use a default if available
+			if(this.default) return this.default;
+			
+			/// Sir, we have nothing
 			return null;
 		}
 	},
