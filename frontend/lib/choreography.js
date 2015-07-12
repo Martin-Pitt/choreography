@@ -33,8 +33,12 @@ var Choreo = {
 		
 		if(typeof to === 'string') to = document.querySelector(to);
 		if(typeof from === 'string') from = document.querySelector(from);
-
+		
+		
+		/// Find view transition
 		var transition = this.transits.find(from, to);
+		
+		/// Otherwise check for a reversible transition
 		var isReverse = false;
 		if(!transition)
 		{
@@ -42,15 +46,40 @@ var Choreo = {
 			isReverse = true;
 		}
 		
-		if(!transition) return null;
+		/// We haven't found a view transition yet, use a default if available
+		if(!transition && this.transits.default)
+		{
+			transition = this.transits.default;
+		}
+		
+		/// Worst case, just do the minimal
+		if(!transition)
+		{
+			Choreo.Entry(from, to);
+			Choreo.Exit(from, to);
+			return null;
+		}
+		
 		
 		Choreo.Entry(from, to);
 		
 		var context = {
-			from: from,
-			to: to,
+			from: null,
+			to: null,
 			isReverse: isReverse
 		};
+		
+		if(isReverse)
+		{
+			context.from = to;
+			context.to = from;
+		}
+		else
+		{
+			context.from = from;
+			context.to = to;
+		}
+		
 		var cache = {};
 		var animation = (typeof transition === 'function'? transition.call(context, cache): transition.constructor.call(context, cache));
 		// TODO: Test if animation is truthy/valid
@@ -60,7 +89,7 @@ var Choreo = {
 		
 		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
 		player.onfinish = function() {
-			if(transition.exit) transition.exit(cache);
+			if(transition.exit) transition.exit.call(context, cache);
 			Choreo.Exit.call(player, from, to);
 			player.cancel();
 		};
@@ -96,10 +125,6 @@ var Choreo = {
 				}
 			}
 			
-			/// We haven't found a transition yet, use a default if available
-			if(this.default) return this.default;
-			
-			/// Sir, we have nothing
 			return null;
 		}
 	},

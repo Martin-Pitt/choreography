@@ -57,7 +57,6 @@ article.view {
 	width: 100%;
 }
 
-
 a.inline {
 	display: inline-block;
 	line-height: 1;
@@ -73,13 +72,15 @@ a.inline {
 /* Introduction */
 
 article.intro {
-	
+	background: hsl(48, 8%, 87%) linear-gradient(to bottom, hsl(190, 15%, 92%), hsl(72, 22%, 95%),  hsl(26, 76%, 92%), hsl(160, 5%, 77%), hsl(180, 10%, 76%)) center no-repeat;
+	background-size: cover;
+	background-image: url(../assets/clouds.jpg);
 }
 
 article.intro header {
 	padding: 120px 40px 20px;
 	background: hsl(215, 50%, 53%);
-	box-shadow: 0 3px 0px hsla(0, 0%, 0%, 0.2);
+	/* box-shadow: 0 3px 0px hsla(0, 0%, 0%, 0.2); */
 	color: hsl(120, 0%, 100%);
 }
 

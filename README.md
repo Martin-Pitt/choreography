@@ -20,10 +20,9 @@ absolutely positioned container, which is fullscreen relative to its' parent.
 
 ## Dependencies
 
-* Web Animations API
-* HTMLElement.prototype.matches
-* HTMLElement.prototype.closest
-
+* [Web Animations API](https://github.com/web-animations/web-animations-js)
+* [Element.matches](https://developer.mozilla.org/en-US/docs/Web/API/element/matches)
+* [Element.closest](https://developer.mozilla.org/en-US/docs/Web/API/element/closest)
 
 
 
