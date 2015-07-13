@@ -8,19 +8,54 @@
 
 <body>
 	<!-- Markup -->
-	<article class="view intro" style="display: none">
+	<article class="view home" style="display: none">
 		<header>
 			<h1>This is Choreography,</h1>
-			<p>a library for handling view transitions of HTML/CSS and doing it well.<p>
+			<p>a library for view transitions using native APIs.</p>
+		</header>
+		<main class="content">
+			<nav>
+				<button class="tile" data-view="article.why">Introduction</button>
+				<button class="tile" data-view="article.documentation">Documentation</button>
+				<button class="tile" data-view="article.download">Download</button>
+				<button class="tile" data-view="article.unknown">…</button>
+			</nav>
+		</main>
+	</article>
+	
+	<article class="view why" style="display: none">
+		<header>
+			<h1>Why?</h1>
 		</header>
 		<main class="content">
 			<p>
-				I have always been fascinated of user interfaces with motion.<br>
-				Coding CSS Animations or CSS Transitions to tell a clue or a story is awesome.
+				I have always been fascinated of user interfaces and motion design.
 			</p>
 			<p>
-				When Google's <a class="inline" target="_blank" href="http://www.google.com/design/spec/material-design/">Material Design spec</a> came out, I realised the need to animate between HTML elements that represent views.
+				But I realised there was no good way to define and control view transitions.<br>
+				At least without giving up control of your HTML and CSS to a complicated framework.
 			</p>
+			<p>
+				This is my solution.
+			</p>
+		</main>
+	</article>
+	
+	<article class="view documentation" style="display: none">
+		<header>
+			
+		</header>
+		<main>
+			
+		</main>
+	</article>
+	
+	<article class="view download" style="display: none">
+		<header>
+			Download
+		</header>
+		<main>
+			
 		</main>
 	</article>
 	

@@ -276,7 +276,17 @@ var Choreo = {
 	
 	Preset: {
 		fade: function() {
-			return Choreo.Animate.fade(this.to, 'in', { duration: 250 });
+			if(this.to && this.from)
+				return new AnimationGroup([
+					Choreo.Animate.fade(this.from, 'out', { duration: 250 }),
+					Choreo.Animate.fade(this.to, 'in', { duration: 250 })
+				]);
+			
+			else if(this.to)
+				return Choreo.Animate.fade(this.to, 'in', { duration: 250 });
+			
+			else if(this.from)
+				return Choreo.Animate.fade(this.from, 'out', { duration: 250 });
 		},
 		reveal: function() {}
 	}
