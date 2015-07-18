@@ -27,20 +27,20 @@
 				</button>
 				<button class="tile disabled" tabindex=-1 data-view="article.examples">
 					<h4>Examples</h4>
-					<p>I understand by practice, not just theory</p>
+					<p>I learn by practice, not just theory</p>
 				</button>
 				<button class="tile disabled" tabindex=-1 data-view="article.docs">
 					<h4>Documentation</h4>
-					<p>API docs, tutorials, …</p>
+					<p>Usage, API, tutorials, …</p>
 				</button>
 				<button class="tile disabled" tabindex=-1 data-view="article.download">
 					<h4>Download</h4>
 					<p>All you need to start using this</p>
 				</button>
-				<a class="tile" href="http://choreography.herokuapp.com/">
-					<h4>Join the Choreography community on Slack</h4>
+				<a class="tile" target="_blank" href="http://slack.choreography.io/">
+					<h4>Join the Choreography slack team</h4>
 				</a>
-				<button class="tile disabled" tabindex=-1 data-view="article.faq">
+				<button class="tile" data-view="article.faq">
 					<h4>FAQ</h4>
 				</button>
 			</nav>
@@ -84,7 +84,7 @@
 			</nav>
 			<h1>Examples</h1>
 		</header>
-		<main>
+		<main class="content">
 			<ul>
 				<li>This website<br>
 					https://github.com/Martin-Pitt/choreography/tree/master
@@ -101,7 +101,7 @@
 			</nav>
 			<h1>Documentation</h1>
 		</header>
-		<main>
+		<main class="content">
 			
 		</main>
 	</article>
@@ -113,18 +113,67 @@
 			</nav>
 			<h1>Download</h1>
 		</header>
-		<main>
+		<main class="content">
 			
 		</main>
 	</article>
 	
 	
 	<article class="view faq" style="display: none">
-		<header>
-			
+		<header class="primary">
+			<nav>
+				<button data-view="article.home">Back</button>
+			</nav>
+			<h1>FAQ</h1>
 		</header>
-		<main>
-			FAQ
+		<main class="content">
+			<dl>
+				<dt><h2>Will this be Open Source?</h2></dt>
+				<dd>
+					Hell yes.
+				</dd>
+				<dd>
+					I'm still deciding on what Open Source license.<br>
+					Maybe MIT License?
+				</dd>
+				<dd>
+					Deciding also on how people can contribute.<br>
+					I love <a class="inline" href="http://openopensource.org/">openopensource.org</a> - but is that the right fit?
+				</dd>
+				
+				<dt><h2>How do I get it?</h2></dt>
+				<dd>
+					Still working out the kinks, but this website is living proof of concept.<br>
+					I'm going to open the GitHub repo, but still working out a few things, see above.
+				</dd>
+				
+				<dt><h2>Can I use this in production?</h2></dt>
+				<dd>
+					This library is still in early development and not ready for production apps yet.
+				</dd>
+				<dd>
+					Natively the Web Animations API does not have much browser support currently:<br>
+					<a class="inline" href="http://caniuse.com/#feat=web-animation">caniuse.com/#feat=web-animation</a><br>
+					<br>
+					There is a polyfill available though, which does seem to have effective cross-brower support:<br>
+					<a class="inline" href="https://github.com/web-animations/web-animations-js">github.com/web-animations/web-animations-js</a><br>
+					I recommend the web-animations-next build.
+				</dd>
+				
+				<!-- <dt><h2>What do the versions mean?</h2></dt>
+				<dd>
+					‹major›.‹minor›<br>
+					<br>
+					Where:<br>
+					  <b>major</b> is incremented upon changes of the API contract, e.g. function arguments and major behavioural changes<br>
+					  <b>minor</b> is incremented upon minor changes, such as fixes and improvements
+				</dd>
+				
+				Well that is the plan at least, not using versions right now as I need to compile API into a doc.
+				Then I can have a full overview of the library and establish versioning from that point on.
+				
+				-->
+			</dl>
 		</main>
 	</article>
 	

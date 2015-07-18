@@ -76,10 +76,14 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 		};
 		
 		this.to.style.opacity = 0;
+		this.to.style.zIndex = 2;
 		cache.tapped.style.color = 'transparent';
 		
 		return new GroupEffect([
-			Choreo.Animate.fade(this.to, 'in', {
+			new KeyframeEffect(this.to, [
+				{ opacity: 0 },
+				{ opacity: 1 }
+			], {
 				delay: 500,
 				duration: 300,
 				fill: 'both'
@@ -117,6 +121,7 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 		cache.tapped.style.color = null;
 		this.to.style.opacity = null;
 		this.to.style.top = null;
+		this.to.style.zIndex = null;
 		scrollTop(0);
 	}
 });

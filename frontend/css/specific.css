@@ -103,8 +103,7 @@ article.why {
 	Documentation
 */
 
-article.docs {
-}
+article.docs {}
 
 
 
@@ -113,8 +112,7 @@ article.docs {
 	Download
 */
 
-article.download {
-}
+article.download {}
 
 
 
@@ -124,6 +122,50 @@ article.download {
 	FAQ
 */
 
-article.faq {
+article.faq main.content {
+	padding-bottom: 100px;
 }
+
+article.faq dl {
+/* 	background: hsl(215, 0%, 90%); */
+}
+
+article.faq dt,
+article.faq dd {
+	position: relative;
+	overflow: hidden;
+	padding: 10px 10px 10px 40px;
+	border-radius: 4px;
+	background: hsl(215, 0%, 90%);
+}
+
+article.faq dt {
+	margin: 30px 0 5px;
+}
+
+article.faq dt:first-child {
+	margin-top: 0;
+}
+
+article.faq dd {
+	margin: 5px 0;
+}
+
+article.faq dt h2 {
+	display: inline-block;
+	margin: 0;
+}
+
+article.faq dt:before,
+article.faq dd:before {
+	position: absolute;
+	top: -.45em;
+	left: -0.15em;
+	font-size: 3em;
+	color: hsl(0, 0%, 80%);
+}
+
+article.faq dt:before { content: 'Q' }
+article.faq dd:before { content: 'A' }
+
 
