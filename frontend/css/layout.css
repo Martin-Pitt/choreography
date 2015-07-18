@@ -27,11 +27,6 @@ nav.horizontal > * {
 	box-sizing: border-box;
 }
 
-html {
-	font: 20px/1.25 Lato, Arial, sans-serif;
-	text-rendering: optimizeLegibility;
-}
-
 html, body {
 	height: 100%;
 	width: 100%;
@@ -67,103 +62,96 @@ a.inline {
 
 
 
-/* Introduction */
+/*
+	Typographic
+*/
 
-article.home {
-	background: hsl(215, 50%, 50%);
+html {
+	font: 16px/1.45 Lato, Arial, sans-serif;
+	text-rendering: optimizeLegibility;
 }
 
-article.home header {
-	padding: 120px 40px 20px;
-	color: hsl(120, 0%, 100%);
+p { margin-bottom: 1.3em }
+h1, h2, h3, h4 { margin: 1.414em 0 0.5em; line-height: 1.2 }
+h1 { margin-top: 0; font-size: 5.063em }
+h2 { font-size: 3.375em }
+h3 { font-size: 2.25em }
+h4 { font-size: 1.5em }
+small { font-size: 0.667em }
+
+@media only screen and (max-width: 900px) {
+	h1 { font-size: 3.998em }
+	h2 { font-size: 2.827em }
+	h3 { font-size: 1.999em }
+	h4 { font-size: 1.414em }
 }
 
 @media only screen and (max-width: 800px) {
-	article.home header { padding-top: 15% }
-}
-
-article.home header h1 {
-	font: 64px/1.2 Lato;
-}
-
-article.home header p {
-	font: 24px/1.2 Lato;
+	h1 { font-size: 3.157em }
+	h2 { font-size: 2.369em }
+	h3 { font-size: 1.777em }
+	h4 { font-size: 1.333em }
 }
 
 @media only screen and (max-width: 700px) {
-	article.home header h1 { font-size: 40px }
-	article.home header p { font-size: 18px }
+	h1 { font-size: 2.441em }
+	h2 { font-size: 1.953em }
+	h3 { font-size: 1.563em }
+	h4 { font-size: 1.250em }
 }
 
-article.home main.content {
-	background: hsl(0, 0%, 80%);
-	-webkit-transform-origin: center -20%;
-	transform-origin: center -20%;
+@media only screen and (max-width: 600px) {
+	h1 { font-size: 2.074em }
+	h2 { font-size: 1.728em }
+	h3 { font-size: 1.440em }
+	h4 { font-size: 1.200em }
 }
 
-article.home nav {
-	padding: 10px;
-}
-
-article.home button.tile {
-	height: 60px;
-	padding: 0 20px;
-	background: hsl(200, 50%, 50%);
-	color: hsl(215, 0%, 100%);
+@media only screen and (max-width: 500px) {
+	h1 { font-size: 1.602em }
+	h2 { font-size: 1.424em }
+	h3 { font-size: 1.266em }
+	h4 { font-size: 1.125em }
 }
 
 
 
+/*
+	Primary Header
+*/
 
-
-
-
-
-
-
-
-
-
-
-/* 
-article.home main.content {
-	max-width: 1000px;
+header.primary {
+	position: relative;
+	background: hsl(160, 50%, 50%);
+	color: white;
 	padding: 80px 40px 20px;
-	font-size: 0;
 }
 
-article.home main.content p {
-	margin-bottom: 20px;
+header.primary nav {
+	position: absolute;
+	top: 10px;
+	left: 40px;
+	right: 40px;
 }
 
-article.home main.content p:last-child {
-	margin-bottom: 0;
-}
-
-
-article.home button.tile {
-	width: 45%;
-	height: 200px;
+header.primary button {
+	display: inline-block;
+	padding: 10px 20px;
 	border-radius: 4px;
-	box-shadow: 0 1px 2px #aaa;
 	background: white;
-	font: 24px/1.2 Lato;
+	color: hsl(160, 50%, 50%);
 }
 
-article.home main.content {
-	padding: 0;
+
+
+
+/*
+	Main Content
+*/
+
+main.content {
+	padding: 40px 40px 0;
 }
- */
-
-
-
-
-
-
-
-
-
-
 
 
 

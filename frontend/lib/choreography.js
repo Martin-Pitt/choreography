@@ -85,7 +85,11 @@ var Choreo = {
 		// TODO: Test if animation is truthy/valid
 		var player = document.timeline.play(animation);
 		
-		if(isReverse) player.reverse();
+		if(isReverse)
+		{
+			player.pause();
+			player.reverse();
+		}
 		
 		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
 		player.onfinish = function() {
@@ -147,7 +151,7 @@ var Choreo = {
 			// Get sibling ancestors then
 			else
 			{
-				var siblings = Choreo._commonSiblings(from, to);
+				var siblings = Choreo.Unility.commonSiblings(from, to);
 				siblings[0].parentNode.insertBefore(siblings[1], siblings[0].nextSibling);
 			}
 			
@@ -214,19 +218,6 @@ var Choreo = {
 		}
 	},
 	
-	_parents: function parents(node) {
-		var nodes = [node];
-		for (; node; node = node.parentNode) nodes.unshift(node);
-		return nodes;
-	},
-	
-	_commonSiblings: function commonSiblings(a, b) {
-		var x = this._parents(a);
-		var y = this._parents(b);
-		if (x[0] != y[0]) throw "No common ancestor!";
-		for (var i = 1; i < x.length; i++) if(x[i] != y[i]) return [x[i - 1], y[i - 1]];
-	},
-	
 	
 	
 	Animate: {
@@ -234,14 +225,12 @@ var Choreo = {
 			var keyframes = null;
 			if(direction === 'in') keyframes = [ { offset: 0, opacity: 0 }, { offset: 1, opacity: 1 } ]; else
 			if(direction === 'out') keyframes = [ { offset: 0, opacity: 1 }, { offset: 1, opacity: 0 } ];
-			return new Animation(element, keyframes, timing);
+			return new KeyframeEffect(element, keyframes, timing);
 		},
 		
 		edge: function(element, direction, timing) {
-			// TODO: nearest clipping container (overflow: hidden or screen)
-			
 			/// Get current locations of view & element
-			var viewRect = element.closest('article.view, body').getBoundingClientRect();
+			var viewRect = Choreo.Utility.closestClip(element).getBoundingClientRect();
 			var elementRect = element.getBoundingClientRect();
 			
 			var match = direction.match(/(to|from) (?:(top|bottom|left|right)? ?(top|bottom|left|right)?)/);
@@ -264,20 +253,100 @@ var Choreo = {
 					{ offset: 1, transform: 'translate(0px, 0px)' }
 				];
 				
-				return new Animation(element, keyframes, timing);
+				return new KeyframeEffect(element, keyframes, timing);
 			}
 			else throw new Error('Syntax Error in Animation.edge!', direction);
 		},
 		
 		reveal: function(element, direction) {
 			
-		}
+		},
+		
+		/// Play multiple animations at once but each element has their animation delayed based on distance to an origin
+		/// Great for hierarchical timing
+		step: function(elements, keyframes, options) {
+			var group = [];
+			var rects = Array.prototype.map.call(elements, function(element) { return element.getBoundingClientRect() });
+			var bounds = { left: rects[0].left, top: rects[0].top, right: rects[0].right, bottom: rects[0].bottom, width: 0, height: 0 };
+			rects.forEach(function(rect) {
+				if(rect.left < bounds.left) bounds.left = rect.left;
+				if(rect.right > bounds.right) bounds.right = rect.right;
+				if(rect.top < bounds.top) bounds.top = rect.top;
+				if(rect.bottom > bounds.bottom) bounds.bottom = rect.bottom;
+			});
+			bounds.width = bounds.right - bounds.left;
+			bounds.height = bounds.bottom - bounds.top;
+			
+			var origin = Choreo.Utility.parseCoordinate(options.origin || 'left top', bounds);
+			
+			for(var iter = 0, total = elements.length; iter < total; ++iter)
+			{
+				var element = elements[iter];
+				var rect = rects[iter];
+				var distance = Math.sqrt(
+					Math.pow(origin.x - (rect.left+rect.width*.5), 2) +
+					Math.pow(origin.y - (rect.top+rect.height*.5), 2)
+				);
+				
+				if(typeof keyframes === 'function')
+				{
+					keyframes = keyframes.call({
+						element: element,
+						rect: rect,
+						distance: distance
+					}, options);
+				}
+				
+				group.push(new KeyframeEffect(element, keyframes, {
+					delay: (options.delay || 0) + (distance / 4 * (options.stepMult || 1)),
+					duration: options.duration,
+					fill: options.fill,
+					easing: options.easing
+				}));
+			}
+			
+			return new GroupEffect(group);
+		},
+		
+		evade: function(target, elements, onEach) {
+			var rects = Array.prototype.map.call(elements, function(element) { return element.getBoundingClientRect() });
+			var from = target.getBoundingClientRect();
+			var deltas = rects.map(function(rect) {
+				return {
+					x: (rect.left + rect.width*.5) - (from.left + from.width*.5),
+					y: (rect.top + rect.height*.5) - (from.top + from.height*.5)
+				}
+			});
+			var distances = deltas.map(function(delta) { return Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2)) });
+			var directions = deltas.map(function(delta, index) {
+				var magnitude = distances[index];
+				if(magnitude == 0) return { x: 0, y: 0 };
+				return { x: delta.x / magnitude, y: delta.y / magnitude }
+			});
+			
+			var effects = [];
+			for(var iter = 0, total = elements.length; iter < total; ++iter)
+			{
+				var effect = onEach.call({
+					rect: rects[iter],
+					delta: deltas[iter],
+					direction: directions[iter],
+					distance: distances[iter]
+				}, elements[iter]);
+				
+				if(effect) effects.push(effect);
+			}
+			
+			return new GroupEffect(effects);
+		},
+		
+		
 	},
 	
 	Preset: {
 		fade: function() {
 			if(this.to && this.from)
-				return new AnimationGroup([
+				return new GroupEffect([
 					Choreo.Animate.fade(this.from, 'out', { duration: 250 }),
 					Choreo.Animate.fade(this.to, 'in', { duration: 250 })
 				]);
@@ -288,7 +357,87 @@ var Choreo = {
 			else if(this.from)
 				return Choreo.Animate.fade(this.from, 'out', { duration: 250 });
 		},
-		reveal: function() {}
+		
+		reveal: function() {
+			
+		}
+	},
+	
+	Utility: {
+		parseCoordinate: function(str, reference) {
+			var match = str.match(/(left|center|right) (top|center|bottom)/);
+			if(match)
+			{
+				var relative = { x: 0, y: 0 };
+				
+				if(match[1] === 'left') relative.x = 0; else
+				if(match[1] === 'center') relative.x = 0.5; else
+				if(match[1] === 'right') relative.x = 1;
+				
+				if(match[2] === 'top') relative.y = 0; else
+				if(match[2] === 'center') relative.y = 0.5; else
+				if(match[2] === 'bottom') relative.y = 1;
+				
+				return {
+					x: reference.left + reference.width * relative.x,
+					y: reference.top + reference.height * relative.y
+				};
+			}
+			
+			match = str.match(/(left|right|top|bottom|center)/);
+			if(match)
+			{
+				var relative = { x: 0, y: 0 };
+				
+				if(match[1] === 'left') relative.x = 0; else
+				if(match[1] === 'right') relative.x = 1; else
+				if(match[1] === 'top') relative.y = 0; else
+				if(match[1] === 'bottom') relative.y = 1; else
+				if(match[1] === 'center') { relative.x = 0.5; relative.y = 0.5; }
+				
+				return {
+					x: reference.left + reference.width * relative.x,
+					y: reference.top + reference.height * relative.y
+				};
+			}
+			
+			match = str.match(/([\.\d]+)% ([\.\d]+)%/);
+			if(match)
+			{
+				var relative = {
+					x: parseFloat(match[1])/100.0,
+					y: parseFloat(match[2])/100.0
+				};
+				
+				return {
+					x: reference.left + reference.width * relative.x,
+					y: reference.top + reference.height * relative.y
+				};
+			}
+		},
+		
+		parents: function parents(node) {
+			var nodes = [node];
+			for (; node; node = node.parentNode) nodes.unshift(node);
+			return nodes;
+		},
+		
+		commonSiblings: function commonSiblings(a, b) {
+			var x = this.parents(a);
+			var y = this.parents(b);
+			if (x[0] != y[0]) throw "No common ancestor!";
+			for (var i = 1; i < x.length; i++) if(x[i] != y[i]) return [x[i - 1], y[i - 1]];
+		},
+		
+		/// Find closest element (that is not itself) that clips the view, e.g. has overflow hidden, otherwise return document root <html>
+		closestClip: function closestClippingAncestor(node) {
+			while(node && (node = node.parentNode) && node instanceof Element && node !== document.body) {
+				if(getComputedStyle(node).overflow !== 'visible')
+					return node;
+			}
+			
+			return document.documentElement;
+		}
 	}
 };
 

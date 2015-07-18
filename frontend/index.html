@@ -4,6 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1, width=device-width">
 	<title>Choreography</title>
+	
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="fonts/lato.css">
+	<link rel="stylesheet" href="css/unstyle.css">
+	<link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/specific.css">
 
 
 <body>
@@ -11,39 +17,89 @@
 	<article class="view home" style="display: none">
 		<header>
 			<h1>This is Choreography,</h1>
-			<p>a library for view transitions using native APIs.</p>
+			<p>a library for  view transitions  using native APIs.</p>
 		</header>
-		<main class="content">
+		<main>
 			<nav>
-				<button class="tile" data-view="article.why">Introduction</button>
-				<button class="tile" data-view="article.documentation">Documentation</button>
-				<button class="tile" data-view="article.download">Download</button>
-				<button class="tile" data-view="article.unknown">…</button>
+				<button class="tile" data-view="article.why">
+					<h4>Why?</h4>
+					<p>Web Apps should be fast and easy to understand</p>
+				</button>
+				<button class="tile disabled" tabindex=-1 data-view="article.examples">
+					<h4>Examples</h4>
+					<p>I understand by practice, not just theory</p>
+				</button>
+				<button class="tile disabled" tabindex=-1 data-view="article.docs">
+					<h4>Documentation</h4>
+					<p>API docs, tutorials, …</p>
+				</button>
+				<button class="tile disabled" tabindex=-1 data-view="article.download">
+					<h4>Download</h4>
+					<p>All you need to start using this</p>
+				</button>
+				<a class="tile" href="http://choreography.herokuapp.com/">
+					<h4>Join the Choreography community on Slack</h4>
+				</a>
+				<button class="tile disabled" tabindex=-1 data-view="article.faq">
+					<h4>FAQ</h4>
+				</button>
 			</nav>
 		</main>
 	</article>
 	
 	<article class="view why" style="display: none">
-		<header>
+		<header class="primary">
+			<nav>
+				<button data-view="article.home">Back</button>
+			</nav>
 			<h1>Why?</h1>
 		</header>
 		<main class="content">
 			<p>
-				I have always been fascinated of user interfaces and motion design.
+				I believe  Web Apps should be fast,  but also easily understood.
+			</p>
+			<blockquote>
+				“Properly applied animations between views reduces  cognitive load.”
+			</blockquote>
+			<p>
+				This is the real war on performance.
 			</p>
 			<p>
-				But I realised there was no good way to define and control view transitions.<br>
-				At least without giving up control of your HTML and CSS to a complicated framework.
+				For me it is also not just making it  easy to understand for the user,  but also the developer.
 			</p>
 			<p>
-				This is my solution.
+				But there was no good way  to define and control view transitions.<br>
+				Especially without giving up control and depending on a framework.
+			</p>
+			<p>
+				I wanted to do view transitions  in a way that  felt right with the web.
 			</p>
 		</main>
 	</article>
 	
-	<article class="view documentation" style="display: none">
-		<header>
-			
+	<article class="view examples" style="display: none">
+		<header class="primary">
+			<nav>
+				<button data-view="article.home">Back</button>
+			</nav>
+			<h1>Examples</h1>
+		</header>
+		<main>
+			<ul>
+				<li>This website<br>
+					https://github.com/Martin-Pitt/choreography/tree/master
+				<li>…
+				<li>…
+			</ul>
+		</main>
+	</article>
+	
+	<article class="view docs" style="display: none">
+		<header class="primary">
+			<nav>
+				<button data-view="article.home">Back</button>
+			</nav>
+			<h1>Documentation</h1>
 		</header>
 		<main>
 			
@@ -51,8 +107,11 @@
 	</article>
 	
 	<article class="view download" style="display: none">
-		<header>
-			Download
+		<header class="primary">
+			<nav>
+				<button data-view="article.home">Back</button>
+			</nav>
+			<h1>Download</h1>
 		</header>
 		<main>
 			
@@ -60,12 +119,12 @@
 	</article>
 	
 	
-	<article class="view unknown" style="display: none">
+	<article class="view faq" style="display: none">
 		<header>
 			
 		</header>
 		<main>
-			
+			FAQ
 		</main>
 	</article>
 	
@@ -82,10 +141,7 @@
 	
 	
 	
-	<!-- Assets -->
-	<link rel="stylesheet" href="fonts/lato.css">
-	<link rel="stylesheet" href="css/unstyle.css">
-	<link rel="stylesheet" href="css/layout.css">
+	<!-- Deferred Assets -->
 	<script defer src="lib/web-animations-next.js"></script>
 	<script defer src="lib/poly.js"></script>
 	<script defer src="lib/choreography.js"></script>

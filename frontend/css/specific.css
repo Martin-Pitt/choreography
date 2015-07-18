@@ -1,0 +1,129 @@
+/*
+	specific.css is where all the *-specific CSS goes, e.g. for views/pages, which is not reusable
+	Anything promoted to reusable should be in layout.css
+*/
+
+
+
+/*
+	Home
+*/
+
+article.home {
+	background: hsl(215, 0%, 90%);
+}
+
+article.home header {
+	padding: 20px 40px 40px;
+	color: hsl(215, 0%, 10%);
+}
+
+article.home header h1 {
+	margin-bottom: 0;
+}
+
+article.home header :last-child {
+	margin-bottom: 0;
+}
+
+article.home main {
+	padding: 0;
+	background: hsl(0, 0%, 80%);
+}
+
+article.home nav {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 1%;
+	font-size: 0;
+	text-align: center;
+}
+
+article.home .tile {
+	position: relative;
+	display: inline-block;
+	width: 29%;
+	height: 0;
+	overflow-x: hidden;
+	padding-top: 25%;
+	margin: 1%;
+	background: hsl(215, 50%, 50%);
+	color: white;
+	font-size: 16px;
+	vertical-align: top;
+	text-align: left;
+}
+
+@media only screen and (max-width: 960px) { article.home .tile { width: 48% } }
+@media only screen and (max-width: 480px) { article.home .tile { width: 98% } }
+
+article.home .tile:focus { outline: 8px solid white }
+article.home .tile:hover { background-color: hsl(215, 50%, 60%) }
+article.home .tile:active { background-color: hsl(215, 50%, 40%); outline: none }
+
+article.home .tile.disabled {
+	background-color: hsl(215, 10%, 50%);
+	color: #aaa;
+	pointer-events: none;
+}
+
+
+article.home .tile h4 {
+	position: absolute;
+	bottom: 50%;
+	left: 20px;
+	margin: 0 0 5px;
+	vertical-align: bottom;
+}
+
+article.home .tile p {
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	right: 20px;
+	margin: 5px 0 0;
+	opacity: 0.7;
+}
+
+
+
+
+/*
+	Why
+*/
+
+article.why {
+	background: hsl(215, 0%, 90%);
+}
+
+
+
+
+/*
+	Documentation
+*/
+
+article.docs {
+}
+
+
+
+
+/*
+	Download
+*/
+
+article.download {
+}
+
+
+
+
+
+/*
+	FAQ
+*/
+
+article.faq {
+}
+
