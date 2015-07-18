@@ -18,8 +18,10 @@
 	],
 	
 	"scripts": {
+		"start": "node --harmony index.js",
 		"serve": "if hash iojs 2>/dev/null; then iojs .koa.js; else node --harmony .koa.js; fi;"
 	},
+
 	"dependencies": {
 		"koa": "^0.21.0",
 		"koa-static": "^1.4.9"
