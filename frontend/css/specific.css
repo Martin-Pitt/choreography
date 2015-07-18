@@ -72,6 +72,7 @@ article.home .tile h4 {
 	position: absolute;
 	bottom: 50%;
 	left: 20px;
+	right: 20px;
 	margin: 0 0 5px;
 	vertical-align: bottom;
 }
