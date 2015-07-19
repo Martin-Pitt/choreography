@@ -140,9 +140,11 @@ Choreo.graph('article.home');
 
 /// Catching page-to-page interaction
 var currentView = 'article.home';
-document.addEventListener('click', function(event) {
+function onDataView(event) {
 	var interactive = event.target.closest('a, button');
 	if(!interactive || !interactive.matches('[data-view]')) return;
+	
+	event.preventDefault();
 	
 	interactive.classList.add('active');
 	var next = interactive.dataset.view;
@@ -150,10 +152,16 @@ document.addEventListener('click', function(event) {
 	currentView = next;
 	interactive.classList.remove('active');
 	interactive.blur();
-});
+}
+
+document.addEventListener('mouseup', onDataView);
+document.addEventListener('touchstart', onDataView);
 
 
 
+/// Utility function to set/get the scrollTop cross-browser (read: webkit is buggy)
+/// see: https://dev.opera.com/articles/fixing-the-scrolltop-bug/
+/// (I tried to use document.scrollingElement, but had no luck? Is it because I have `overflow-y: scroll;` explicitly on <body>?)
 window.scrollTop = function (top) {
 	if(arguments.length) { document.documentElement.scrollTop = top; document.body.scrollTop = top; }
 	else return document.documentElement.scrollTop || document.body.scrollTop;
