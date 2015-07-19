@@ -22,15 +22,10 @@ var serve = require('koa-static');
 
 /// Redirect non-file-ish queries to index
 server.use(function* (next) {
-	if(this.hostname === 'choreography.io' && this.request.protocol === 'http')
+	if(process.env.NODE_ENV === 'Production' && this.request.headers['x-forwarded-proto'] != 'https')
 	{
-		this.redirect(this.request.href.replace('http://', 'https://'));
+		this.redirect('https://' + this.request.hostname + this.request.originalUrl);
 	}
-	
-// 	if(this.request.path.length && /^(\/[\-_a-z0-9]+)+\/?$/i.test(this.request.path))
-// 	{
-// 		this.request.path = '/';
-// 	}
 	
 	else yield next;
 });
