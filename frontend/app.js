@@ -4,7 +4,15 @@ if(navigator.getBattery)
 	navigator.getBattery()
 	.then(function(battery) {
 		/// If the battery level is below a certain percent, lets switch off view transitions entirely
-		if(battery.level < 0.2) Choreo.isDisabled = true;
+		if(battery.level < 0.2)
+		{
+			Choreo.isDisabled = true;
+			
+			var banner = document.createElement('aside');
+			banner.className = 'banner low-battery';
+			banner.innerHTML = '<button class="close">x</button>We have detected that your battery is below 20% and therefore optimised the web app for efficiency';
+			document.body.appendChild(banner);
+		}
 		
 		/// We could also alternatively load a specialised stylesheet for low battery usage (E.g. disable text-shadow, box-shadow and filters)
 	});
@@ -190,6 +198,21 @@ function onDataView(event) {
 
 document.addEventListener('mouseup', onDataView);
 document.addEventListener('touchend', onDataView);
+
+
+
+function onCloseBanner(event) {
+	if(!event.target.matches('aside.banner button.close')) return;
+	event.preventDefault();
+	
+	var banner = event.target.closest('aside.banner');
+	banner.parentNode.removeChild(banner);
+}
+
+document.addEventListener('mouseup', onCloseBanner);
+document.addEventListener('touchend', onCloseBanner);
+
+
 
 
 
