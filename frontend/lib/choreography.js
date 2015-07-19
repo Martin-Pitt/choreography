@@ -1,4 +1,20 @@
 var Choreo = {
+	/// Here is where you start defining view transition animations
+	/*
+		Currently two signatures are supported,
+		You can pass in an object with the { constructor: function(cache) { … }, exit: function(cache) { … } } interface
+		Or you can pass in a function() { … }
+		
+		If you pass in a function, or a object with a constructor method, they MUST return an animation created with the Web Animation API.
+		That is either a KeyframeEffect, GroupEffect or SequenceEffect. Something that can be run with document.timeline.play(…);
+		
+		The exit method is called upon animation completion, to allow you to clean up.
+		The 'cache' argument is given to you so that you can store temporary data and pass it along to exit method, e.g. cached query selectors.
+		
+		An extra signature is provided to defining a 'default' view transition for ALL.
+		Otherwise by default the library will only flip instantly between views.
+		Common default animation to set up is cross fading.
+	*/
 	define: function(what, transition) {
 		if(what === 'default')
 		{
@@ -24,6 +40,9 @@ var Choreo = {
 		return this;
 	},
 	
+	/// The single most important method;  Allows you to trigger a view transition between two DOM elements
+	/// 'from' is optional, so you can either call:  `Choreo.graph(from, to);`  or  `Choreo.graph(to);`
+	/// 'from' and 'to' can be a CSS selector, a DOM element or null
 	graph: function(from, to) {
 		if(arguments.length === 1)
 		{
@@ -101,6 +120,7 @@ var Choreo = {
 		return player;
 	},
 	
+	/// Internal abstraction layer for storing view transitions/settings
 	transits: {
 		default: null,
 		list: [],
@@ -133,9 +153,11 @@ var Choreo = {
 		}
 	},
 	
+	/// Internal function for Entering view transitions
+	/// Sets up DOM (puts them closely together; to avoid need of z-index'ing which may affect stacking context)
+	/// and makes sure view containers stay in their final layouts, so you can safely do crazy stuff during your animation
+	/// NOTE: This means inline styles affected will be overwritten and affected view containers will be moved in your DOM
 	Entry: function entryDOM(from, to) {
-// 		var from = older && document.querySelector('.view.' + older), to = newer && document.querySelector('.view.' + newer);
-		
 		/// Show new view
 		if(from && to)
 		{
@@ -151,7 +173,7 @@ var Choreo = {
 			// Get sibling ancestors then
 			else
 			{
-				var siblings = Choreo.Unility.commonSiblings(from, to);
+				var siblings = Choreo.Utility.commonSiblings(from, to);
 				siblings[0].parentNode.insertBefore(siblings[1], siblings[0].nextSibling);
 			}
 			
@@ -161,8 +183,8 @@ var Choreo = {
 			var fbox = from.getBoundingClientRect();
 			var abox = ancestor.getBoundingClientRect();
 			
+			/// Allow layout and then calculate it
 			to.style.display = '';
-			// to.style.visibility = 'hidden';
 			var tbox = to.getBoundingClientRect();
 			
 			/// Share layout coordinates
@@ -182,16 +204,18 @@ var Choreo = {
 		
 		else if(to)
 		{
+			/// Allow layout
 			to.style.display = '';
-			// to.style.visibility = 'hidden';
 		}
 	},
 	
+	/// Internal function for Exitting view transitions
+	/// Removes inline styles
 	Exit: function exitDOM(from, to, isReverse) {
-// 		var from = older && document.querySelector('.view.' + older), to = newer && document.querySelector('.view.' + newer);
+		/// Just to make it absolutely clear here on what is front-facing or behind the other view
 		var back = from, front = to;
 		
-		// TODO: Make reversable for cancelations, e.g. swap front with back
+		// TODO: Make reversable for cancelations, e.g. swap front with back?
 		
 		// Make front permanent, hide back
 		if(front) front.style.visibility = '';
@@ -219,8 +243,9 @@ var Choreo = {
 	},
 	
 	
-	
+	/// Choreo.Animate.* contains all the useful functions for composing a View Transition
 	Animate: {
+		/// Lightweight fade in / fade out; Maybe this is unnecessary? It's too simple and hides the beauty of the Web Anim API
 		fade: function(element, direction, timing) {
 			var keyframes = null;
 			if(direction === 'in') keyframes = [ { offset: 0, opacity: 0 }, { offset: 1, opacity: 1 } ]; else
@@ -228,11 +253,13 @@ var Choreo = {
 			return new KeyframeEffect(element, keyframes, timing);
 		},
 		
+		/// Allows you to move elements to or from offscreen locations (determined by the parent that is clipping its' appearance)
 		edge: function(element, direction, timing) {
 			/// Get current locations of view & element
 			var viewRect = Choreo.Utility.closestClip(element).getBoundingClientRect();
 			var elementRect = element.getBoundingClientRect();
 			
+			/// We only have one syntax support at the moment, example usage: "to top", "to left bottom" or "from right"
 			var match = direction.match(/(to|from) (?:(top|bottom|left|right)? ?(top|bottom|left|right)?)/);
 			if(match)
 			{
@@ -255,18 +282,23 @@ var Choreo = {
 				
 				return new KeyframeEffect(element, keyframes, timing);
 			}
+			
+			/// Otherwise, just throw an error
 			else throw new Error('Syntax Error in Animation.edge!', direction);
 		},
 		
+		/// Work in Progress; I want to be able to reveal an element from growing or shrinking from a circle (or other shape)
 		reveal: function(element, direction) {
-			
+			// ... ?
 		},
 		
-		/// Play multiple animations at once but each element has their animation delayed based on distance to an origin
-		/// Great for hierarchical timing
+		/// Play multiple animations at once but each element has their animation delayed based on distance to an origin position
+		/// Great for the 'hierarchical timing' technique
 		step: function(elements, keyframes, options) {
-			var group = [];
+			/// Get all them rects
 			var rects = Array.prototype.map.call(elements, function(element) { return element.getBoundingClientRect() });
+			
+			/// Figure out the big bounding box covering the rects
 			var bounds = { left: rects[0].left, top: rects[0].top, right: rects[0].right, bottom: rects[0].bottom, width: 0, height: 0 };
 			rects.forEach(function(rect) {
 				if(rect.left < bounds.left) bounds.left = rect.left;
@@ -277,8 +309,11 @@ var Choreo = {
 			bounds.width = bounds.right - bounds.left;
 			bounds.height = bounds.bottom - bounds.top;
 			
+			/// Parse the origin from the user and apply it with the bounding box
 			var origin = Choreo.Utility.parseCoordinate(options.origin || 'left top', bounds);
 			
+			/// Loop through the elements and build the animations into a group
+			var group = [];
 			for(var iter = 0, total = elements.length; iter < total; ++iter)
 			{
 				var element = elements[iter];
@@ -297,18 +332,26 @@ var Choreo = {
 					}, options);
 				}
 				
-				group.push(new KeyframeEffect(element, keyframes, {
-					delay: (options.delay || 0) + (distance / 4 * (options.stepMult || 1)),
-					duration: options.duration,
-					fill: options.fill,
-					easing: options.easing
-				}));
+				if(keyframes && keyframes.length)
+				{
+					group.push(new KeyframeEffect(element, keyframes, {
+						delay: (options.delay || 0) + (distance / 4 * (options.stepMult || 1)),
+						duration: options.duration,
+						fill: options.fill,
+						easing: options.easing
+					}));
+				}
 			}
 			
+			/// Return our users' glorious animation, all composited together :)
 			return new GroupEffect(group);
 		},
 		
+		/// Allows you to run a callback on multiple elements and contrast it in relation to a single element
+		/// Common usecases tends to be having a bunch of elements move in sequence away or towards that single element
+		/// Calculates layout, relative vectors, distances and normalised direction vectors, then passes it as a 'this' for onEach
 		evade: function(target, elements, onEach) {
+			/// Get and calculate all that fancy geometry
 			var rects = Array.prototype.map.call(elements, function(element) { return element.getBoundingClientRect() });
 			var from = target.getBoundingClientRect();
 			var deltas = rects.map(function(rect) {
@@ -324,6 +367,7 @@ var Choreo = {
 				return { x: delta.x / magnitude, y: delta.y / magnitude }
 			});
 			
+			/// Loop through it all and hit the onEach callback for an animation to composite
 			var effects = [];
 			for(var iter = 0, total = elements.length; iter < total; ++iter)
 			{
@@ -337,32 +381,45 @@ var Choreo = {
 				if(effect) effects.push(effect);
 			}
 			
+			/// Finally return our animation
 			return new GroupEffect(effects);
-		},
+		}
 		
-		
+		/*
+			Any other useful animation-creating functions?
+			I would like to compile all the common techniques and tricks here
+		*/
 	},
 	
+	
+	/// Choreo.Preset.* contains default view transitions you can use
 	Preset: {
-		fade: function() {
-			if(this.to && this.from)
-				return new GroupEffect([
-					Choreo.Animate.fade(this.from, 'out', { duration: 250 }),
-					Choreo.Animate.fade(this.to, 'in', { duration: 250 })
-				]);
-			
-			else if(this.to)
-				return Choreo.Animate.fade(this.to, 'in', { duration: 250 });
-			
-			else if(this.from)
-				return Choreo.Animate.fade(this.from, 'out', { duration: 250 });
+		/// Fades one animation from one to the other
+		fade: function(settings) {
+			return function fadePreset () {
+				if(this.to && this.from)
+					return new GroupEffect([
+						Choreo.Animate.fade(this.from, 'out', { duration: settings.duration }),
+						Choreo.Animate.fade(this.to, 'in', { duration: settings.duration })
+					]);
+				
+				else if(this.to)
+					return Choreo.Animate.fade(this.to, 'in', { duration: settings.duration });
+				
+				else if(this.from)
+					return Choreo.Animate.fade(this.from, 'out', { duration: settings.duration });
+			}
 		},
 		
+		/// Work in Progress; I want to be able to reveal a view from growing or shrinking from a circle (or other shape)
 		reveal: function() {
-			
+			return function() {}
 		}
 	},
 	
+	
+	/// Various *internal* utility functions
+	/// If your sly, feel free to use them :), but NO API CONTRACT PROMISES here!
 	Utility: {
 		parseCoordinate: function(str, reference) {
 			var match = str.match(/(left|center|right) (top|center|bottom)/);
@@ -416,12 +473,14 @@ var Choreo = {
 			}
 		},
 		
+		/// Loop through, grabbing all the ancestors in one big array
 		parents: function parents(node) {
 			var nodes = [node];
 			for (; node; node = node.parentNode) nodes.unshift(node);
 			return nodes;
 		},
 		
+		/// Figure out the common ancestor of two nodes
 		commonSiblings: function commonSiblings(a, b) {
 			var x = this.parents(a);
 			var y = this.parents(b);
