@@ -155,7 +155,7 @@ function onDataView(event) {
 }
 
 document.addEventListener('mouseup', onDataView);
-document.addEventListener('touchstart', onDataView);
+document.addEventListener('touchend', onDataView);
 
 
 
