@@ -140,6 +140,10 @@ header.primary button {
 	border-radius: 4px;
 	background: white;
 	color: hsl(160, 50%, 50%);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 
