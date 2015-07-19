@@ -24,6 +24,12 @@
 
 
 var Choreo = {
+	/// Properties
+	
+	// This controls whether view transitions should happen at all, or just simply do instant view flipping
+	isDisabled: false,
+	
+	
 	/// Here is where you start defining view transition animations
 	/*
 		Currently two signatures are supported,
@@ -77,6 +83,13 @@ var Choreo = {
 		
 		if(typeof to === 'string') to = document.querySelector(to);
 		if(typeof from === 'string') from = document.querySelector(from);
+		
+		if(this.isDisabled)
+		{
+			Choreo.Entry(from, to);
+			Choreo.Exit(from, to);
+			return null;
+		}
 		
 		
 		/// Find view transition
@@ -132,14 +145,19 @@ var Choreo = {
 		if(isReverse)
 		{
 			player.pause();
-			player.reverse();
+// 			player.currentTime = player.effect.activeDuration - 1;
+// 			player.reverse();
+			requestAnimationFrame(function() {
+// 				player.currentTime = player.effect.activeDuration - 1;
+				player.reverse();
+			});
 		}
 		
 		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
 		player.onfinish = function() {
 			if(transition.exit) transition.exit.call(context, cache);
 			Choreo.Exit.call(player, from, to);
-			player.cancel();
+// 			player.cancel();
 		};
 		
 		return player;
@@ -178,6 +196,7 @@ var Choreo = {
 		}
 	},
 	
+
 	/// Internal function for Entering view transitions
 	/// Sets up DOM (puts them closely together; to avoid need of z-index'ing which may affect stacking context)
 	/// and makes sure view containers stay in their final layouts, so you can safely do crazy stuff during your animation

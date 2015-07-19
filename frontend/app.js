@@ -1,3 +1,19 @@
+/// We want to be good citizen, check battery usage on the device
+if(navigator.getBattery)
+{
+	navigator.getBattery()
+	.then(function(battery) {
+		/// If the battery level is below a certain percent, lets switch off view transitions entirely
+		if(battery.level < 0.2) Choreo.isDisabled = true;
+		
+		/// We could also alternatively load a specialised stylesheet for low battery usage (E.g. disable text-shadow, box-shadow and filters)
+	});
+	
+	/// Note: By the time the promise kicks in, the view transition for the home screen may have happened already
+}
+
+
+
 /// Setup our default preset
 Choreo.define('default', Choreo.Preset.fade);
 
