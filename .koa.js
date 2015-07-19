@@ -22,12 +22,17 @@ var serve = require('koa-static');
 
 /// Redirect non-file-ish queries to index
 server.use(function* (next) {
-	if(this.request.path.length && /^(\/[\-_a-z0-9]+)+\/?$/i.test(this.request.path))
+	if(this.hostname === 'choreography.io' && this.request.protocol === 'http')
 	{
-		this.request.path = '/';
+		this.redirect(request.href.replace('http://', 'https://'));
 	}
 	
-	yield next;
+// 	if(this.request.path.length && /^(\/[\-_a-z0-9]+)+\/?$/i.test(this.request.path))
+// 	{
+// 		this.request.path = '/';
+// 	}
+	
+	else yield next;
 });
 
 
