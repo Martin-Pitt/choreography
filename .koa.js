@@ -24,7 +24,7 @@ var serve = require('koa-static');
 server.use(function* (next) {
 	if(this.hostname === 'choreography.io' && this.request.protocol === 'http')
 	{
-		this.redirect(request.href.replace('http://', 'https://'));
+		this.redirect(this.request.href.replace('http://', 'https://'));
 	}
 	
 // 	if(this.request.path.length && /^(\/[\-_a-z0-9]+)+\/?$/i.test(this.request.path))
