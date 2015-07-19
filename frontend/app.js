@@ -134,11 +134,14 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 	},
 	
 	exit: function(cache) {
+		var relativeScroll = this.to.getBoundingClientRect().top;
+		
 		cache.tapped.style.color = null;
 		this.to.style.opacity = null;
 		this.to.style.top = null;
 		this.to.style.zIndex = null;
-		scrollTop(0);
+		
+		window.scrollTop(-relativeScroll);
 	}
 });
 
