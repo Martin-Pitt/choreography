@@ -166,9 +166,24 @@ function onDataView(event) {
 	event.preventDefault();
 	
 	interactive.classList.add('active');
-	var next = interactive.dataset.view;
-	Choreo.graph(currentView, next);
-	currentView = next;
+	
+	var view = interactive.dataset.view;
+	
+	// Google Analytics present? Then track the pageview
+	if(window.ga)
+	{
+		var element = document.querySelector(view);
+		var title = element.querySelector('h1');
+		title = title? title.textContent : null;
+		
+		ga('send', 'pageview', {
+			'page': '/' + view.replace('article.', ''),
+			'title': title || ''
+		});
+	}
+	
+	Choreo.graph(currentView, view);
+	currentView = view;
 	interactive.classList.remove('active');
 	interactive.blur();
 }
