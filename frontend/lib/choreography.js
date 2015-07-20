@@ -541,6 +541,218 @@ var Choreo = {
 			
 			return document.documentElement;
 		}
+	},
+	
+	
+	/// This namespace will contain the effort to bring us physics-based animation
+	/// We are constrained Web Anim requiring definition of durations, so physics calcs can't be iterative
+	/// We do have to fake it, but really well.
+	/// I recently found Dynamics.JS which does this really well, I recommend checking it out: https://github.com/michaelvillar/dynamics.js
+	/// I'm borrowing some of the code for us here, but in a compatible format
+	Physics: {
+		/*
+			The MIT License (MIT)
+			
+			Copyright (c) 2015 Michael Villar
+			
+			Permission is hereby granted, free of charge, to any person obtaining a copy
+			of this software and associated documentation files (the 'Software'), to deal
+			in the Software without restriction, including without limitation the rights
+			to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+			copies of the Software, and to permit persons to whom the Software is
+			furnished to do so, subject to the following conditions:
+			
+			The above copyright notice and this permission notice shall be included in
+			all copies or substantial portions of the Software.
+			
+			THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+			IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+			FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+			AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+			LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+			OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+			THE SOFTWARE.
+		*/
+		
+		
+		/// You can replace the `easing: '…'` in the timing object of your animation with these:
+		easeIn: function(friction) { if(arguments.length === 0) friction = 500; return 'cubic-bezier(' + (0.98 - (friction/1000)) + ',0,1,1)' },
+		easeOut: function(friction) { if(arguments.length === 0) friction = 500; return 'cubic-bezier(0,0,' + (0.02 + (friction/1000)) + ',1)' },
+		easeInOut: function(friction) { if(arguments.length === 0) friction = 500; return 'cubic-bezier(' + (0.98 - (friction/1000)) + ',0,' + (0.02 + (friction/1000)) + ',1)' },
+		
+		/// These on the other hand are too complex for the Web Animation API to handle in it's `easing` property does NOT allow custom easing functions
+		/// To use these, 
+		
+// Note for self when implementing:
+// initialForce means swapping END value when interpolation => 1.0 for the START value
+// (that is, the curve loops back to beginning, like bounce & forceWithGravity)
+// (It's a hack by applying temp middle-man option to re-use code)
+
+
+// 		spring: function
+/*
+var A1, A2, decal, frequency, friction, s;
+  if (options == null) {
+    options = {};
+  }
+  applyDefaults(options, arguments.callee.defaults);
+  frequency = Math.max(1, options.frequency / 20);
+  friction = Math.pow(20, options.friction / 100);
+  s = options.anticipationSize / 1000;
+  decal = Math.max(0, s);
+  A1 = function(t) {
+    var M, a, b, x0, x1;
+    M = 0.8;
+    x0 = s / (1 - s);
+    x1 = 0;
+    b = (x0 - (M * x1)) / (x0 - x1);
+    a = (M - b) / x0;
+    return (a * t * options.anticipationStrength / 100) + b;
+  };
+  A2 = function(t) {
+    return Math.pow(friction / 10, -t) * (1 - t);
+  };
+  return function(t) {
+    var A, At, a, angle, b, frictionT, y0, yS;
+    frictionT = (t / (1 - s)) - (s / (1 - s));
+    if (t < s) {
+      yS = (s / (1 - s)) - (s / (1 - s));
+      y0 = (0 / (1 - s)) - (s / (1 - s));
+      b = Math.acos(1 / A1(yS));
+      a = (Math.acos(1 / A1(y0)) - b) / (frequency * (-s));
+      A = A1;
+    } else {
+      A = A2;
+      b = 0;
+      a = 1;
+    }
+    At = A(frictionT);
+    angle = frequency * (t - s) * a + b;
+    return 1 - (At * Math.cos(angle));
+  };
+*/
+// 		bounce: function
+/*
+var A, fn, frequency, friction;
+  if (options == null) {
+    options = {};
+  }
+  applyDefaults(options, arguments.callee.defaults);
+  frequency = Math.max(1, options.frequency / 20);
+  friction = Math.pow(20, options.friction / 100);
+  A = function(t) {
+    return Math.pow(friction / 10, -t) * (1 - t);
+  };
+  fn = function(t) {
+    var At, a, angle, b;
+    b = -3.14 / 2;
+    a = 1;
+    At = A(t);
+    angle = frequency * t * a + b;
+    return At * Math.cos(angle);
+  };
+  fn.initialForce = true;
+  return fn;
+*/
+// 		gravity: function
+/*
+var L, bounciness, curves, elasticity, fn, getPointInCurve, gravity;
+  if (options == null) {
+    options = {};
+  }
+  applyDefaults(options, arguments.callee.defaults);
+  bounciness = Math.min(options.bounciness / 1250, 0.8);
+  elasticity = options.elasticity / 1000;
+  gravity = 100;
+  curves = [];
+  L = (function() {
+    var b, curve;
+    b = Math.sqrt(2 / gravity);
+    curve = {
+      a: -b,
+      b: b,
+      H: 1
+    };
+    if (options.initialForce) {
+      curve.a = 0;
+      curve.b = curve.b * 2;
+    }
+    while (curve.H > 0.001) {
+      L = curve.b - curve.a;
+      curve = {
+        a: curve.b,
+        b: curve.b + L * bounciness,
+        H: curve.H * bounciness * bounciness
+      };
+    }
+    return curve.b;
+  })();
+  getPointInCurve = function(a, b, H, t) {
+    var c, t2;
+    L = b - a;
+    t2 = (2 / L) * t - 1 - (a * 2 / L);
+    c = t2 * t2 * H - H + 1;
+    if (options.initialForce) {
+      c = 1 - c;
+    }
+    return c;
+  };
+  (function() {
+    var L2, b, curve, results;
+    b = Math.sqrt(2 / (gravity * L * L));
+    curve = {
+      a: -b,
+      b: b,
+      H: 1
+    };
+    if (options.initialForce) {
+      curve.a = 0;
+      curve.b = curve.b * 2;
+    }
+    curves.push(curve);
+    L2 = L;
+    results = [];
+    while (curve.b < 1 && curve.H > 0.001) {
+      L2 = curve.b - curve.a;
+      curve = {
+        a: curve.b,
+        b: curve.b + L2 * bounciness,
+        H: curve.H * elasticity
+      };
+      results.push(curves.push(curve));
+    }
+    return results;
+  })();
+  fn = function(t) {
+    var curve, i, v;
+    i = 0;
+    curve = curves[i];
+    while (!(t >= curve.a && t <= curve.b)) {
+      i += 1;
+      curve = curves[i];
+      if (!curve) {
+        break;
+      }
+    }
+    if (!curve) {
+      v = options.initialForce ? 0 : 1;
+    } else {
+      v = getPointInCurve(curve.a, curve.b, curve.H, t);
+    }
+    return v;
+  };
+  fn.initialForce = options.initialForce;
+  return fn;
+*/
+// 	forceWithGravity: function
+/*
+if (options == null) {
+    options = {};
+  }
+  applyDefaults(options, arguments.callee.defaults);
+  options.initialForce = true;
+  return dynamics.gravity(options);
+*/
 	}
 };
 
