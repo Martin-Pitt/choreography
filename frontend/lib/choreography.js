@@ -22,7 +22,6 @@
 	THE SOFTWARE.
 */
 
-
 var Choreo = {
 	/// Properties
 	
@@ -144,20 +143,15 @@ var Choreo = {
 		
 		if(isReverse)
 		{
-			player.pause();
-// 			player.currentTime = player.effect.activeDuration - 1;
-// 			player.reverse();
-			requestAnimationFrame(function() {
-// 				player.currentTime = player.effect.activeDuration - 1;
-				player.reverse();
-			});
+			player.currentTime = player.effect.activeDuration;
+			player.reverse();
 		}
 		
 		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
 		player.onfinish = function() {
 			if(transition.exit) transition.exit.call(context, cache);
 			Choreo.Exit.call(player, from, to);
-// 			player.cancel();
+			player.cancel();
 		};
 		
 		return player;
@@ -388,7 +382,7 @@ var Choreo = {
 			}
 			
 			/// Return our users' glorious animation, all composited together :)
-			return new GroupEffect(group);
+			return new GroupEffect(group, { fill: 'both' });
 		},
 		
 		/// Allows you to run a callback on multiple elements and contrast it in relation to a single element
@@ -426,7 +420,7 @@ var Choreo = {
 			}
 			
 			/// Finally return our animation
-			return new GroupEffect(effects);
+			return new GroupEffect(effects, { fill: 'both' });
 		}
 		
 		/*
@@ -445,7 +439,7 @@ var Choreo = {
 					return new GroupEffect([
 						Choreo.Animate.fade(this.from, 'out', { duration: settings.duration }),
 						Choreo.Animate.fade(this.to, 'in', { duration: settings.duration })
-					]);
+					], { fill: 'both' });
 				
 				else if(this.to)
 					return Choreo.Animate.fade(this.to, 'in', { duration: settings.duration });

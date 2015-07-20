@@ -44,13 +44,13 @@ Choreo.define('article.home', {
 			
 			new KeyframeEffect(cache.header, [
 				{ opacity: 0, transform: 'translateY(-30px)' },
-				{ opacity: .2, transform: 'translateY(-10px)' },
+				{ opacity: .2, transform: 'translateY(-15px)' },
 				{ opacity: 1, transform: 'translateY(0px)' }
 			], {
 				delay: 250,
 				duration: 500,
 				fill: 'both',
-				easing: 'ease-out'
+				easing: Choreo.Physics.easeOut(200)
 			}),
 			
 			Choreo.Animate.step(cache.nav.children, [
@@ -104,6 +104,11 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 		cache.tapped.style.color = 'transparent';
 		
 		return new GroupEffect([
+			
+			/// Choreo.Physics.spring ...?
+			/// Maybe wrap KeyframeEffect into a player and seek with custom interpolation? :)
+		(function() { var kf = 
+			
 			new KeyframeEffect(this.to, [
 				{ opacity: 0 },
 				{ opacity: 1 }
@@ -111,7 +116,12 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 				delay: 500,
 				duration: 300,
 				fill: 'both'
-			}),
+			})
+			
+		kf.onsample = function(t, effect, animation) {
+			console.log(t)
+		};
+		return kf; }).bind(this)(),
 			
 			Choreo.Animate.fade(cache.fromHeader, 'out', {
 				duration: 100,
@@ -136,9 +146,9 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 				delay: 200,
 				duration: 300,
 				fill: 'both',
-				easing: 'cubic-bezier(.58,.09,.48,1)'
+				easing: Choreo.Physics.easeOut(150)
 			})
-		]);
+		], { fill: 'both' });
 	},
 	
 	exit: function(cache) {
