@@ -34,7 +34,7 @@ article.home main {
 article.home nav {
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 1%;
+	padding: 2%;
 	font-size: 0;
 	text-align: center;
 }
@@ -42,9 +42,9 @@ article.home nav {
 article.home .tile {
 	position: relative;
 	display: inline-block;
-	width: 29%;
+	width: 31%;
 	height: 0;
-	overflow-x: hidden;
+	overflow: hidden;
 	padding-top: 25%;
 	margin: 1%;
 	background: hsl(215, 50%, 50%);
@@ -58,8 +58,19 @@ article.home .tile {
 	user-select: none;
 }
 
-@media only screen and (max-width: 960px) { article.home .tile { width: 48% } }
-@media only screen and (max-width: 480px) { article.home .tile { width: 98% } }
+article.home .tile.wide { width: 64% }
+
+@media only screen and (max-width: 960px) {
+	article.home .tile { width: 47.5% }
+	article.home .tile.wide { width: 97% }
+}
+
+@media only screen and (max-width: 480px) {
+	article.home .tile { width: 97% }
+}
+
+article.home .tile.full { width: 97% }
+
 
 article.home .tile:focus { outline: 8px solid white }
 article.home .tile:hover { background-color: hsl(215, 50%, 60%) }
@@ -71,13 +82,28 @@ article.home .tile.disabled {
 	pointer-events: none;
 }
 
+/*
+article.home .tile:after {
+	position: absolute;
+	font: 96px/1 sans-serif;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	opacity: 0.2;
+}
+
+article.home .tile:after { content: '\27A1'; right: .2em; bottom: -.375em }
+article.home a.tile:after { content: '\21F2'; right: -.0825em; bottom: -.15em }
+article.home a.tile[download]:after { content: '\2B07'; right: 0; bottom: 0; border-bottom: .125em solid; font-size: 80px }
+*/
 
 article.home .tile h4 {
 	position: absolute;
 	bottom: 50%;
 	left: 20px;
 	right: 20px;
-	margin: 0 0 5px;
+	margin: 0 0 .2em;
 	vertical-align: bottom;
 }
 
@@ -86,8 +112,9 @@ article.home .tile p {
 	top: 50%;
 	left: 20px;
 	right: 20px;
-	margin: 5px 0 0;
+	margin: .2em 0 0;
 	opacity: 0.7;
+	line-height: 1.1;
 }
 
 

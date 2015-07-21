@@ -117,8 +117,6 @@ var Choreo = {
 		}
 		
 		
-		Choreo.Entry(from, to);
-		
 		var context = {
 			from: null,
 			to: null,
@@ -137,6 +135,10 @@ var Choreo = {
 		}
 		
 		var cache = {};
+		if(transition.pre) transition.pre.call(context, cache);
+		
+		Choreo.Entry(from, to);
+		
 		var animation = (typeof transition === 'function'? transition.call(context, cache): transition.constructor.call(context, cache));
 		// TODO: Test if animation is truthy/valid
 		var player = document.timeline.play(animation);

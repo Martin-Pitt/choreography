@@ -28,14 +28,16 @@ Choreo.define('default', Choreo.Preset.fade);
 
 /// Define animation for our introduction view
 Choreo.define('article.home', {
-	/// Creating our animation using the Web Animation API
-	constructor: function(cache) {
+	/// Just before anything happens at all, lets do some setup
+	pre: function(cache) {
 		cache.header = this.to.querySelector('header');
 		cache.content = this.to.querySelector('main');
 		cache.nav = this.to.querySelector('nav');
-		
 		this.to.style.opacity = 0;
-		
+	},
+
+	/// Creating our animation using the Web Animation API
+	constructor: function(cache) {
 		return new GroupEffect([
 			Choreo.Animate.fade(this.to, 'in', {
 				duration: 300,
