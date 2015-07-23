@@ -20,6 +20,10 @@ if(navigator.getBattery)
 	/// Note: By the time the promise kicks in, the view transition for the home screen may have happened already
 }
 
+/// The ability above to hack/control Choreography globally might prove really useful
+/// E.g. providing some accessibility features for the user:
+/// http://www.alphr.com/apple/1001057/why-apple-s-next-operating-systems-are-already-making-users-sick
+
 
 
 /// Setup our default preset

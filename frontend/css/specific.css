@@ -172,7 +172,7 @@ article.faq dd {
 }
 
 article.faq dt {
-	margin: 30px 0 5px;
+	margin: 40px 0 5px;
 }
 
 article.faq dt:first-child {
@@ -183,7 +183,11 @@ article.faq dd {
 	margin: 5px 0;
 }
 
-article.faq dt h2 {
+article.faq dt h2,
+article.faq dt h3,
+article.faq dt h4,
+article.faq dt h5,
+article.faq dt h6 {
 	display: inline-block;
 	margin: 0;
 }
@@ -191,9 +195,10 @@ article.faq dt h2 {
 article.faq dt:before,
 article.faq dd:before {
 	position: absolute;
-	top: -.45em;
-	left: -0.15em;
-	font-size: 3em;
+	top: -.2em;
+	top: 50%;
+	left: -.15em;
+	font: 2em/0 Lato, Arial, sans-serif;
 	color: hsl(0, 0%, 80%);
 }
 

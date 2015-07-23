@@ -1,6 +1,9 @@
 
 # Choreography
 
+[![Join Choreography community on Slack](https://choreography-slackin.herokuapp.com/badge.svg)](https://choreography-slackin.herokuapp.com)
+
+
 Motion is crucial to telling the story of a UI.
 
 I wanted to solve the problem of View Transitions on the web.
