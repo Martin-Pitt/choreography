@@ -103,8 +103,9 @@ article.home .tile h4 {
 	bottom: 50%;
 	left: 20px;
 	right: 20px;
-	margin: 0 0 .2em;
+	margin: 0;
 	vertical-align: bottom;
+	line-height: 1.4;
 }
 
 article.home .tile p {
@@ -112,21 +113,94 @@ article.home .tile p {
 	top: 50%;
 	left: 20px;
 	right: 20px;
-	margin: .2em 0 0;
+	margin: 0;
 	opacity: 0.7;
 	line-height: 1.1;
 }
+
+article.home .tile.article time,
+article.home .tile.article .author {
+	position: absolute;
+	bottom: 50%;
+	opacity: .7;
+	font: 0.6em/1 Lato, Arial, sans-serif;
+}
+
+article.home .tile.article h4 { bottom: 50%; margin-bottom: .6em;}
+article.home .tile.article p { top: 50%; margin-top: 1em; }
+article.home .tile.article time { left: 20px; }
+article.home .tile.article .author { left: 100px; }
+
+@media only screen and (max-width: 480px) {
+	article.home .tile.article time { left: 20px; bottom: 5px }
+	article.home .tile.article .author { left: 100px; bottom: 5px }
+}
+
+
+
+article.home .tile.blurb {
+/* 	background: hsl(0, 0%, 30%);
+	background-image: radial-gradient(800px at 50% 30%, hsl(0, 0%, 40%) 0%, hsl(0, 0%, 50%) 50%);
+	color: hsl(0, 0%, 100%); */
+
+	background: radial-gradient(300px at 50% 30%, hsl(0, 0%, 90%) 0%, hsl(0, 0%, 85%) 100%);
+	color: hsl(0, 0%,10%);
+}
+
+article.home .tile.blurb p {
+	position: absolute;
+	top: 50px;
+	left: 20px;
+	right: 20px;
+	font: 20px/1.2 Lato, Arial, sans-serif;
+	opacity: 1;
+}
+
+
+
+
 
 
 
 
 /*
-	Why
+	Choregraphy.js Article
 */
 
-article.why {
-	background: hsl(215, 0%, 90%);
+article.what {}
+
+article.what header {
+	padding: 20px 40px 0px;
 }
+
+article.what header div.wrap {
+	position: relative;
+	max-width: 780px;
+	padding: 40px 40px 10px;
+	margin: 0 auto;
+	box-shadow: 0 0 2px #555;
+}
+
+article.what header h1 {
+	margin-bottom: 0;
+}
+
+article.what header .author,
+article.what header time {
+	display: inline-block;
+	margin-right: 20px;
+	opacity: .8;
+	font: 0.7em/1 Lato, Arial, sans-serif;
+}
+
+article.what .status {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	opacity: 0.5;
+}
+
+
 
 
 
@@ -140,11 +214,14 @@ article.docs {}
 
 
 
+
+
 /*
 	Download
 */
 
 article.download {}
+
 
 
 
@@ -180,8 +257,16 @@ article.faq dt:first-child {
 }
 
 article.faq dd {
-	margin: 5px 0;
+/* 	margin: 5px 0; */
 }
+
+
+article.faq dd + dd {
+	border-top: 1px solid hsl(215, 0%, 80%);
+	border-radius: 0 0 4px 4px;
+	margin-top: -4px;
+}
+
 
 article.faq dt h2,
 article.faq dt h3,
