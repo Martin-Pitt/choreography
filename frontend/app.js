@@ -39,7 +39,7 @@ Choreo.define('article.home', {
 		cache.nav = this.to.querySelector('nav');
 		this.to.style.opacity = 0;
 	},
-
+	
 	/// Creating our animation using the Web Animation API
 	constructor: function(cache) {
 		return new GroupEffect([
@@ -119,7 +119,7 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 				{ opacity: 0 },
 				{ opacity: 1 }
 			], {
-				delay: 500,
+				delay: 600,
 				duration: 300,
 				fill: 'both'
 			})
@@ -137,9 +137,9 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 			Choreo.Animate.evade(cache.tapped, cache.tiles, function(element) {
 				return new KeyframeEffect(element, [
 					{ opacity: 1, transform: 'translate(0px, 0px) scale(1)' },
-					{ opacity: 0, transform: 'translate(' + (this.direction.x*100) + 'px, ' + (this.direction.y*100) + 'px) scale(0.9)'}
+					{ opacity: 0, transform: 'translate(' + (this.direction.x*40) + 'px, ' + (this.direction.y*40) + 'px) scale(0.9)'}
 				], {
-					duration: 200,
+					duration: 300,
 					fill: 'both',
 					easing: 'ease-in'
 				});
@@ -149,10 +149,11 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 				{ transform: 'translate(0px, 0px) scale(1, 1)' },
 				{ transform: 'translate(' + delta.left + 'px, ' + delta.top + 'px) scale(' + delta.width + ', ' + delta.height + ')' }
 			], {
-				delay: 200,
-				duration: 300,
+// 				delay: 200,
+				duration: 600,
 				fill: 'both',
-				easing: Choreo.Physics.easeOut(150)
+				easing: 'cubic-bezier(.74,-0.21,.45,1.09)'
+// 				easing: Choreo.Physics.easeOut(150)
 			})
 		], { fill: 'both' });
 	},
