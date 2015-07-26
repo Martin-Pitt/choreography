@@ -191,15 +191,16 @@ Choreo.graph('article.home');
 
 /// Catching page-to-page interaction
 var currentView = 'article.home';
-function onDataView(event) {
-	var interactive = event.target.closest('a, button');
-	if(!interactive || !interactive.matches('[data-view]')) return;
-	
+
+tapDat(document, function isDataView(event) {
+	var element = event.target.closest('a, button');
+	return element && element.matches('[data-view]');
+}, function onDataView(event) {
 	event.preventDefault();
 	
-	interactive.classList.add('active');
-	
-	var view = interactive.dataset.view;
+	var element = event.target.closest('a, button');
+	element.classList.add('active');
+	var view = element.dataset.view;
 	
 	// Google Analytics present? Then track the pageview
 	if(window.ga)
@@ -216,13 +217,9 @@ function onDataView(event) {
 	
 	Choreo.graph(currentView, view);
 	currentView = view;
-	interactive.classList.remove('active');
-	interactive.blur();
-}
-
-document.addEventListener('mouseup', onDataView);
-document.addEventListener('touchend', onDataView);
-
+	element.classList.remove('active');
+	element.blur();
+});
 
 
 function onCloseBanner(event) {
