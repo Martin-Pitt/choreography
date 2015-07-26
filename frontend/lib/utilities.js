@@ -38,6 +38,7 @@ function tapDat(element, filter, callback) {
 				var dist = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
 				if(dist > this.maxDist) {
 					event.target.classList.remove('is-held');
+					event.target.blur();
 					this.startAt = null;
 					return;
 				}

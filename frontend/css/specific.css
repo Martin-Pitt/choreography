@@ -80,7 +80,8 @@ article.home .tile.full { width: 97% }
 
 article.home .tile:focus { outline: 8px solid white }
 article.home .tile:hover { background-color: hsl(215, 50%, 60%) }
-article.home .tile:active { background-color: hsl(215, 50%, 40%); outline: none }
+/* article.home .tile:active */
+article.home .tile.is-held { background-color: hsl(215, 50%, 40%); outline: none }
 
 article.home .tile.disabled {
 	background-color: hsl(215, 10%, 50%);
