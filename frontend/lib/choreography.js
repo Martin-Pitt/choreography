@@ -80,6 +80,8 @@ var Choreo = {
 			from = null;
 		}
 		
+		var _from = from, _to = to;
+		
 		if(typeof to === 'string') to = document.querySelector(to);
 		if(typeof from === 'string') from = document.querySelector(from);
 		
@@ -118,20 +120,32 @@ var Choreo = {
 		
 		
 		var context = {
+			// DOM elements
 			from: null,
 			to: null,
+			
+			// Original CSS selectors
+			_from: null,
+			_to: null,
+			
+			// Whether this animation is playing in reverse
 			isReverse: isReverse
 		};
+		
 		
 		if(isReverse)
 		{
 			context.from = to;
+			context._from = _to;
 			context.to = from;
+			context._to = _from;
 		}
 		else
 		{
 			context.from = from;
+			context._from = _from;
 			context.to = to;
+			context._to = _to;
 		}
 		
 		var cache = {};
@@ -140,7 +154,10 @@ var Choreo = {
 		Choreo.Entry(from, to);
 		
 		var animation = (typeof transition === 'function'? transition.call(context, cache): transition.constructor.call(context, cache));
-		// TODO: Test if animation is truthy/valid
+		// TODO: Test if animation is truthy/valid?
+		
+		Choreo.trigger('preprocess', context, animation);
+		
 		var player = document.timeline.play(animation);
 		
 		if(isReverse)
@@ -149,13 +166,14 @@ var Choreo = {
 			player.reverse();
 		}
 		
-		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first)
+		// TODO: 'onfinish' attribute has been removed from W3C spec, switch to 'finished' Promise (wait for polyfill/browsers to catch up first a bit)
 		player.onfinish = function() {
 			if(transition.exit) transition.exit.call(context, cache);
 			Choreo.Exit.call(player, from, to);
 			player.cancel();
 		};
 		
+		Choreo.trigger('postprocess', context, player);
 		return player;
 	},
 	
@@ -547,7 +565,7 @@ var Choreo = {
 	},
 	
 	off: function(type, func) {
-		if(!type in this.events) return;
+		if(!(type in this.events)) return;
 		var subscribers = this.events[type];
 		var index = subscribers.indexOf(func);
 		if(index === -1) return;
@@ -555,7 +573,7 @@ var Choreo = {
 	},
 	
 	trigger: function(type, context) {
-		if(!type in this.events) return;
+		if(!(type in this.events)) return;
 		var subscribers = this.events[type];
 		var args = Array.prototype.slice.call(arguments, 2);
 		for(var iter = 0, total = subscribers.length; iter < total; ++iter)
