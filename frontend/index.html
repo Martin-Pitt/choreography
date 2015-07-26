@@ -157,17 +157,17 @@
 				One interesting examples is on this website.  When the device battery level is below 20%  all Choreography animations are disabled globally.
 			</p>
 			<p>
-				There is also another hack I am working on:<br>
-				Each time a view transition happens  a counter will be incremented in LocalStorage.
-				  Then the next time the same view is played the duration will be cut shorter.
-				Thus the web app adapts to become faster over time.
+				Second hackable idea I have implemented is hte following:
+			</p>
+			<ul>
+				<li>Every state transition increments a counter
+				<li>The next time the transition is played: the animation is run x% faster
+			</ul>
+			<p>
+				Why?  If you have viewed an animation for the 100th time,  I'm sure you'd understand it quite well already. Therefore, speed it up!
 			</p>
 			<p>
-				Why do this?  As the user starts to understand an animation, we should adapt to that fact.
-				If you have watched the same animation for the hundredth time, you get it already.
-			</p>
-			<p>
-				Our user is a human,  they learn and adapt,  our animations should respect that.
+				Our user is a human,  they learn and adapt,  our animations should respect their time.
 			</p>
 			
 			<!--
