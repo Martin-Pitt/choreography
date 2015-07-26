@@ -192,7 +192,7 @@ var Choreo = {
 		}
 	},
 	
-
+	
 	/// Internal function for Entering view transitions
 	/// Sets up DOM (puts them closely together; to avoid need of z-index'ing which may affect stacking context)
 	/// and makes sure view containers stay in their final layouts, so you can safely do crazy stuff during your animation
@@ -541,10 +541,8 @@ var Choreo = {
 	
 	
 	/// This namespace will contain the effort to bring us physics-based animation
-	/// We are constrained Web Anim requiring definition of durations, so physics calcs can't be iterative
-	/// We do have to fake it, but really well.
+	/// We are constrained by Web Anim requiring definition of durations, so physics calcs can't truly be iterative
 	/// I recently found Dynamics.JS which does this really well, I recommend checking it out: https://github.com/michaelvillar/dynamics.js
-	/// I'm borrowing some of the code for us here, but in a compatible format
 	Physics: {
 		/*
 			The MIT License (MIT)
@@ -576,14 +574,19 @@ var Choreo = {
 		easeOut: function(friction) { if(arguments.length === 0) friction = 500; return 'cubic-bezier(0,0,' + (0.02 + (friction/1000)) + ',1)' },
 		easeInOut: function(friction) { if(arguments.length === 0) friction = 500; return 'cubic-bezier(' + (0.98 - (friction/1000)) + ',0,' + (0.02 + (friction/1000)) + ',1)' },
 		
+
 		/// These on the other hand are too complex for the Web Animation API to handle in it's `easing` property does NOT allow custom easing functions
-		/// To use these, 
 		
 // Note for self when implementing:
 // initialForce means swapping END value when interpolation => 1.0 for the START value
 // (that is, the curve loops back to beginning, like bounce & forceWithGravity)
 // (It's a hack by applying temp middle-man option to re-use code)
 
+// Note2: I have been reading quite a bit of backlash against hacky spring dynamic animations:
+// https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733
+// I am reconsidering that duration ought to be calculated automatically based on the rest state.
+// So, rather than affecting the easing, we should create keyframes. The only problem with this is, how do you interpolate keyframes manually?
+// Possible workaround 'hack' is to create a custom AnimationPlayer that we manually seek to position? Hmm…
 
 // 		spring: function
 /*
