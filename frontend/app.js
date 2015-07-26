@@ -110,11 +110,6 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 		cache.tapped.style.color = 'transparent';
 		
 		return new GroupEffect([
-			
-			/// Choreo.Physics.spring ...?
-			/// Maybe wrap KeyframeEffect into a player and seek with custom interpolation? :)
-		(function() { var kf = 
-			
 			new KeyframeEffect(this.to, [
 				{ opacity: 0 },
 				{ opacity: 1 }
@@ -122,12 +117,7 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 				delay: 600,
 				duration: 300,
 				fill: 'both'
-			})
-			
-		kf.onsample = function(t, effect, animation) {
-			console.log(t)
-		};
-		return kf; }).bind(this)(),
+			}),
 			
 			Choreo.Animate.fade(cache.fromHeader, 'out', {
 				duration: 100,

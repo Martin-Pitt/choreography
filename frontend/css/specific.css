@@ -10,11 +10,12 @@
 */
 
 article.home {
-	background: hsl(215, 0%, 90%);
+	/* background: hsl(215, 0%, 90%); */
 }
 
 article.home header {
 	padding: 20px 40px 40px;
+	background: hsl(215, 0%, 90%);
 	color: hsl(215, 0%, 10%);
 }
 
@@ -65,6 +66,11 @@ article.home .tile.wide { width: 64% }
 	article.home .tile.wide { width: 97% }
 }
 
+@media only screen and (max-width: 600px) {
+	article.home .tile { padding-top: 30% }
+}
+
+
 @media only screen and (max-width: 480px) {
 	article.home .tile { width: 97% }
 }
@@ -82,38 +88,22 @@ article.home .tile.disabled {
 	pointer-events: none;
 }
 
-/*
-article.home .tile:after {
-	position: absolute;
-	font: 96px/1 sans-serif;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	opacity: 0.2;
-}
-
-article.home .tile:after { content: '\27A1'; right: .2em; bottom: -.375em }
-article.home a.tile:after { content: '\21F2'; right: -.0825em; bottom: -.15em }
-article.home a.tile[download]:after { content: '\2B07'; right: 0; bottom: 0; border-bottom: .125em solid; font-size: 80px }
-*/
-
 article.home .tile h4 {
 	position: absolute;
-	bottom: 50%;
+	bottom: 52%;
 	left: 20px;
 	right: 20px;
 	margin: 0;
 	vertical-align: bottom;
-	line-height: 1.4;
+	line-height: 1.1;
 }
 
 article.home .tile p {
 	position: absolute;
-	top: 50%;
+	top: 48%;
 	left: 20px;
 	right: 20px;
-	margin: 0;
+	margin: .1em 0 0;
 	opacity: 0.7;
 	line-height: 1.1;
 }
@@ -131,29 +121,53 @@ article.home .tile.article p { top: 50%; margin-top: 1em; }
 article.home .tile.article time { left: 20px; }
 article.home .tile.article .author { left: 100px; }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 600px) {
+	article.home .tile.article h4 { bottom: 44%;}
+	article.home .tile.article p { top: 46% }
+	article.home .tile.article time,
+	article.home .tile.article .author { bottom: 43%;}
+}
+
+/* @media only screen and (max-width: 480px) {
 	article.home .tile.article time { left: 20px; bottom: 5px }
 	article.home .tile.article .author { left: 100px; bottom: 5px }
-}
+} */
+
+
 
 
 
 article.home .tile.blurb {
-/* 	background: hsl(0, 0%, 30%);
-	background-image: radial-gradient(800px at 50% 30%, hsl(0, 0%, 40%) 0%, hsl(0, 0%, 50%) 50%);
-	color: hsl(0, 0%, 100%); */
-
-	background: radial-gradient(300px at 50% 30%, hsl(0, 0%, 90%) 0%, hsl(0, 0%, 85%) 100%);
-	color: hsl(0, 0%,10%);
+	background: none;
+	outline: 2px solid hsl(0, 0%, 70%);
+	color: hsl(0, 0%, 0%);
 }
 
 article.home .tile.blurb p {
 	position: absolute;
-	top: 50px;
+	top: 50%;
 	left: 20px;
 	right: 20px;
-	font: 20px/1.2 Lato, Arial, sans-serif;
-	opacity: 1;
+	display: inline-block;
+	max-width: 640px;
+	margin: 0 auto;
+	vertical-align: middle;
+	font: 18px/1.2 Lato, Arial, sans-serif;
+	opacity: 0.9;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+@media only screen and (max-width: 960px) {
+	article.home .tile.blurb { width: 97% }
+}
+
+@media only screen and (max-width: 600px) {
+	article.home .tile.blurb { padding-top: 34% }
+}
+
+@media only screen and (max-width: 500px) {
+	article.home .tile.blurb { padding-top: 45% }
 }
 
 
@@ -169,16 +183,30 @@ article.home .tile.blurb p {
 
 article.what {}
 
+article.what nav {
+	max-width: 820px;
+	padding: 0 20px;
+	margin: 20px auto;
+}
+
 article.what header {
-	padding: 20px 40px 0px;
+/* max-width: 780px; */
+	margin: 0 auto;
+	padding: 20px 0 0;
+}
+
+@media only screen and (max-width: 780px) {
+	article.what header { padding-top: 0 }
+	article.what main.article { margin-top: 0 }
 }
 
 article.what header div.wrap {
 	position: relative;
 	max-width: 780px;
-	padding: 40px 40px 10px;
+	padding: 20px 40px 20px;
+	background: inherit;
 	margin: 0 auto;
-	box-shadow: 0 0 2px #555;
+	box-shadow: 0 0 2px -1px #555, inset 0 7px 20px hsla(0, 0%, 100%, 0.05);
 }
 
 article.what header h1 {
@@ -199,6 +227,59 @@ article.what .status {
 	right: 10px;
 	opacity: 0.5;
 }
+
+
+article.what ol {
+	padding-left: 0;
+}
+
+article.what ol li {
+	position: relative;
+	padding-left: 1em;
+	counter-increment: li;
+}
+
+article.what ol li:before {
+	position: absolute;
+	left: 0;
+	top: 0.7em;
+	content: counter(li);
+	font: 0.7em/1 Lato, Arial, sans-serif;
+}
+
+
+article.what ul {}
+
+article.what ul li {
+	position: relative;
+	padding-left: 1em;
+}
+
+article.what ul li:before {
+	position: absolute;
+	left: 0;
+	top: .6em;
+	content: '';
+	border: .2em solid;
+	border-radius: 100%;
+}
+
+article.what ul li small {
+	display: block;
+}
+
+
+main.article {
+	position: relative;
+	max-width: 780px;
+	padding: 60px 40px 40px;
+	margin: -10px auto 40px;
+	background: hsl(0, 0%, 100%);
+	box-shadow: -1px 1px 2px -1px #555, 1px 1px 2px -1px #555;
+	color: hsl(0, 0%, 20%);
+}
+
+
 
 
 
@@ -235,37 +316,18 @@ article.faq main.content {
 	padding-bottom: 100px;
 }
 
-article.faq dl {
-/* 	background: hsl(215, 0%, 90%); */
-}
-
 article.faq dt,
 article.faq dd {
 	position: relative;
 	overflow: hidden;
 	padding: 10px 10px 10px 40px;
-	border-radius: 4px;
 	background: hsl(215, 0%, 90%);
 }
 
-article.faq dt {
-	margin: 40px 0 5px;
-}
+article.faq dt { padding: 15px 10px 15px 40px; margin-top: 40px }
+article.faq dt:first-child { margin-top: 0 }
+article.faq dt + dd { margin-top: 5px }
 
-article.faq dt:first-child {
-	margin-top: 0;
-}
-
-article.faq dd {
-/* 	margin: 5px 0; */
-}
-
-
-article.faq dd + dd {
-	border-top: 1px solid hsl(215, 0%, 80%);
-	border-radius: 0 0 4px 4px;
-	margin-top: -4px;
-}
 
 
 article.faq dt h2,
