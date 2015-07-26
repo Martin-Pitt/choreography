@@ -217,7 +217,8 @@ article.what header h1 {
 }
 
 article.what header .author,
-article.what header time {
+article.what header time,
+article.what header .disqus-comment-count {
 	display: inline-block;
 	margin-right: 20px;
 	opacity: .8;
