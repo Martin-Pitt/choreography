@@ -20,9 +20,26 @@ if(navigator.getBattery)
 	/// Note: By the time the promise kicks in, the view transition for the home screen may have happened already
 }
 
+
+/// We also don't want to annoy the user with the hundredth animation, lets cut it shorter each time
+Choreo.on('postprocess', function(player) {
+	var signature = ['Choreo(', this._from || 'null', ', ', this._to || 'null', ')'].join('');
+	var counter = localStorage.getItem(signature) || 0;
+	localStorage.setItem(signature, ++counter);
+	
+	var maxViews = 100; // How many times an animations need to play (including reversible) to hit max speed
+	var maxSpeed = 0.6; // Animations can be at least 60% faster
+	var speed = 1 - (maxSpeed * Math.sin((Math.min(counter, maxViews) / maxViews) * Math.PI * .5));
+	if(speed > 0.0) player.playbackRate /= speed;
+});
+
+
+
+
 /// The ability above to hack/control Choreography globally might prove really useful
 /// E.g. providing some accessibility features for the user:
 /// http://www.alphr.com/apple/1001057/why-apple-s-next-operating-systems-are-already-making-users-sick
+
 
 
 
