@@ -540,6 +540,36 @@ var Choreo = {
 	},
 	
 	
+	/// Event Listeners
+	on: function(type, func) {
+		var subscribers = (type in this.events)? this.events[type] : (this.events[type] = []);
+		if(subscribers.indexOf(func) === -1) subscribers.push(func);
+	},
+	
+	off: function(type, func) {
+		if(!type in this.events) return;
+		var subscribers = this.events[type];
+		var index = subscribers.indexOf(func);
+		if(index === -1) return;
+		subscribers.splice(index, 1);
+	},
+	
+	trigger: function(type, context) {
+		if(!type in this.events) return;
+		var subscribers = this.events[type];
+		var args = Array.prototype.slice.call(arguments, 2);
+		for(var iter = 0, total = subscribers.length; iter < total; ++iter)
+		{
+			var subscriber = subscribers[iter];
+			subscriber.apply(context, args);
+		}
+	},
+	
+	events: {
+		preprocess: []
+	},
+	
+	
 	/// This namespace will contain the effort to bring us physics-based animation
 	/// We are constrained by Web Anim requiring definition of durations, so physics calcs can't truly be iterative
 	/// I recently found Dynamics.JS which does this really well, I recommend checking it out: https://github.com/michaelvillar/dynamics.js
