@@ -146,6 +146,25 @@ a.inline:after {
 }
 
 
+/*
+	Buttons
+*/
+
+button.flat {
+	display: inline-block;
+	padding: 10px 20px;
+	border-radius: 4px;
+	background: white;
+	color: hsl(160, 50%, 50%);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+
+
 
 /*
 	Primary Header
@@ -163,18 +182,6 @@ header.primary nav {
 	top: 10px;
 	left: 40px;
 	right: 40px;
-}
-
-nav.app button {
-	display: inline-block;
-	padding: 10px 20px;
-	border-radius: 4px;
-	background: white;
-	color: hsl(160, 50%, 50%);
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }
 
 
