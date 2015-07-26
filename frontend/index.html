@@ -73,6 +73,11 @@
 				<a class="tile" target="_blank" href="https://choreography-slackin.herokuapp.com">
 					<h4><span>Choreography Slack</h4>
 					<p>Ask, learn &amp; collaborate with others</p>
+					<!--
+						I need to split this tile in two and add a Code of Conduct policy
+						I will probably fork the following policy as it seems well put and is exactly what I appreciate:
+							https://github.com/frontendlondon-slack/Code-Of-Conduct
+					-->
 				</a>
 				<button class="tile" data-view="article.faq">
 					<h4>FAQ</h4>
@@ -103,6 +108,7 @@
 				<li>Animating between two states helps users understand the flow
 				<li>They inform and shape attention
 				<li>Reduces effort to understand which reduces cognitive load
+				<!-- Any other great points? -->
 			</ol>
 			<br>
 			<p>
@@ -152,15 +158,16 @@
 			</p>
 			<p>
 				There is also another hack I am working on:<br>
-				Each time a view transition happens  a hit counter will be incremented in LocalStorage.
-				  Then,  the next time the view is played  the duration will be adjusted to be shorter.
-				The web app becomes faster over time.
+				Each time a view transition happens  a counter will be incremented in LocalStorage.
+				  Then the next time the same view is played the duration will be cut shorter.
+				Thus the web app adapts to become faster over time.
 			</p>
 			<p>
-				Why do this?  Well,  as the user starts to understand an animation, we should adapt to that fact.<br>
+				Why do this?  As the user starts to understand an animation, we should adapt to that fact.
+				If you have watched the same animation for the hundredth time, you get it already.
 			</p>
 			<p>
-				Our users are human,  they learn  and adapt,  so should our animations.
+				Our user is a human,  they learn and adapt,  our animations should respect that.
 			</p>
 			
 			<!--
@@ -171,11 +178,28 @@
 				http://motionographer.com/2015/07/06/user-interface-design-why-motion-matters/
 				http://www.slideshare.net/CrowChick/a-brief-introduction-to-animation-ui-and-the-visual-cortex
 				https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733
-				Podcast about Motion Design http://www.motionandmeaning.io/
-				Web Animation Weekly http://us1.campaign-archive1.com/home/?u=0a8f219cf8284562f91a26ee9&id=d60f6683d2
 				
-				There was a bit of renaming in the API
-				https://developers.google.com/web/updates/2015/04/web-animations-naming
+				Videos:
+					UI Animation Reviews: Web Navigation https://vimeo.com/121803800
+					http://aneventapart.com/news/post/putting-your-ui-in-motion-with-css-by-val-head-an-event-apart-video
+					Off The Record http://screenings.io/posts/nw76LJmLeYmsXtinH/off-the-record
+				
+				News:
+					Podcast about Motion Design http://www.motionandmeaning.io/
+					Web Animation Weekly http://us1.campaign-archive1.com/home/?u=0a8f219cf8284562f91a26ee9&id=d60f6683d2
+					UI Animation Dispatch http://valhead.us2.list-manage2.com/subscribe?u=6fbaddc8c1fce7588d1a35cb2&id=8f4de2c2e5
+					http://motionographer.com/
+				
+				Books:
+					Designing Interface Animations http://rosenfeldmedia.com/books/designing-interface-animations/
+					The Animator's Survival Kit http://www.amazon.com/Animators-Survival-Kit-Principles-Classical/dp/086547897X
+				
+				Inspirations:
+					https://instagram.com/gifux/
+				
+				
+				There was a bit of renaming in the WAAPI recently, so some sources may be slightly out of date:
+					https://developers.google.com/web/updates/2015/04/web-animations-naming
 			-->
 		</main>
 	</article>
