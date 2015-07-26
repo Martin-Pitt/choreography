@@ -231,6 +231,7 @@ article.what .status {
 
 article.what ol {
 	padding-left: 0;
+	margin: 1em 0;
 }
 
 article.what ol li {
@@ -248,7 +249,9 @@ article.what ol li:before {
 }
 
 
-article.what ul {}
+article.what ul {
+	margin: 1em 0;
+}
 
 article.what ul li {
 	position: relative;
