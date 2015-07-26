@@ -53,6 +53,7 @@
 					<p>Develop snappy Web Apps</p>
 					<span class="author">Martin Pitt</span>
 					<time datetime="2015-07">July, 2015</time>
+					<span class="disqus-comment-count" data-disqus-identifier="article.what">…</span>
 				</button>
 				<button class="tile disabled" tabindex=-1 data-view="article.examples">
 					<h4>Examples</h4>
@@ -89,13 +90,14 @@
 	
 	<article class="view what" style="display: none">
 		<nav class="app">
-			<button data-view="article.home">Back</button>
+			<button class="flat" data-view="article.home">Back</button>
 		</nav>
 		<header class="primary">
 			<div class="wrap">
 				<h1>Choreography.js</h1>
 				<span class="author">By Martin Pitt</span>
 				<time datetime="2015-07">July, 2015</time>
+				<span class="disqus-comment-count" data-disqus-identifier="article.what">…</span>
 				<span class="status" title="Still working on this; Subject to change">[DRAFT]</span>
 			</div>
 		</header>
@@ -157,7 +159,7 @@
 				One interesting examples is on this website.  When the device battery level is below 20%  all Choreography animations are disabled globally.
 			</p>
 			<p>
-				Second hackable idea I have implemented is hte following:
+				Second hackable idea I have implemented is the following:
 			</p>
 			<ul>
 				<li>Every state transition increments a counter
@@ -169,15 +171,22 @@
 			<p>
 				Our user is a human,  they learn and adapt,  our animations should respect their time.
 			</p>
+			<p>
+				Got any other hackable ideas to try?  Please submit them!
+			</p>
+			
 			
 			<!--
 				Should probably work on a curated list of WAAPI related resources?
-				https://developers.google.com/web/updates/2014/05/Web-Animations---element-animate-is-now-in-Chrome-36?hl=en
-				https://medium.com/@ryan_brownhill/crafting-easing-curves-for-user-interfaces-34f39e1b4a43
-				https://medium.com/@pasql/transitional-interfaces-926eb80d64e3
-				http://motionographer.com/2015/07/06/user-interface-design-why-motion-matters/
-				http://www.slideshare.net/CrowChick/a-brief-introduction-to-animation-ui-and-the-visual-cortex
-				https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733
+				
+				Articles/Slides:
+					https://developers.google.com/web/updates/2014/05/Web-Animations---element-animate-is-now-in-Chrome-36?hl=en
+					https://medium.com/@ryan_brownhill/crafting-easing-curves-for-user-interfaces-34f39e1b4a43
+					https://medium.com/@pasql/transitional-interfaces-926eb80d64e3
+					https://medium.com/@sophie_paxtonUX/stop-gratuitous-ui-animation-9ece9aa9eb97
+					http://motionographer.com/2015/07/06/user-interface-design-why-motion-matters/
+					http://www.slideshare.net/CrowChick/a-brief-introduction-to-animation-ui-and-the-visual-cortex
+					https://medium.com/@flyosity/your-spring-animations-are-bad-and-it-s-probably-apple-s-fault-784932e51733
 				
 				Videos:
 					UI Animation Reviews: Web Navigation https://vimeo.com/121803800
@@ -202,12 +211,17 @@
 					https://developers.google.com/web/updates/2015/04/web-animations-naming
 			-->
 		</main>
+		<aside class="disqus">
+			<div id="disqus_thread">
+				<button class="flat comments">Load Comments</button>
+			</div>
+		</aside>
 	</article>
 	
 	<article class="view examples" style="display: none">
 		<header class="primary">
 			<nav class="app">
-				<button data-view="article.home">Back</button>
+				<button class="flat" data-view="article.home">Back</button>
 			</nav>
 			<h1>Examples</h1>
 		</header>
@@ -224,7 +238,7 @@
 	<article class="view docs" style="display: none">
 		<header class="primary">
 			<nav class="app">
-				<button data-view="article.home">Back</button>
+				<button class="flat" data-view="article.home">Back</button>
 			</nav>
 			<h1>Documentation</h1>
 		</header>
@@ -236,7 +250,7 @@
 	<article class="view download" style="display: none">
 		<header class="primary">
 			<nav class="app">
-				<button data-view="article.home">Back</button>
+				<button class="flat" data-view="article.home">Back</button>
 			</nav>
 			<h1>Download</h1>
 		</header>
@@ -249,7 +263,7 @@
 	<article class="view faq" style="display: none">
 		<header class="primary">
 			<nav class="app">
-				<button data-view="article.home">Back</button>
+				<button class="flat" data-view="article.home">Back</button>
 			</nav>
 			<h1>FAQ</h1>
 		</header>
@@ -331,3 +345,4 @@
 		ga('create', 'UA-65315940-1', 'auto');
 		ga('send', 'pageview');
 	</script>
+	<script defer src="https://choreography.disqus.com/count.js"></script>

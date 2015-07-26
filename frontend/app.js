@@ -249,3 +249,22 @@ window.scrollTop = function (top) {
 };
 
 
+
+window.disqus_shortname = 'choreography';
+
+(function() {
+	function loadComments(event) {
+		event.preventDefault();
+		this.removeEventListener('click', loadComments);
+		
+		window.disqus_identifier = 'article.what';
+		window.disqus_title = 'Choreography.js';
+// 		window.disqus_url = ;
+		
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}
+	
+	document.querySelector('#disqus_thread button.comments').addEventListener('click', loadComments);
+})();
