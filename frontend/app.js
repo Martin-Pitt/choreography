@@ -66,9 +66,9 @@ Choreo.define('article.home', {
 			}),
 			
 			new KeyframeEffect(cache.header, [
-				{ opacity: 0, transform: 'translateY(-30px)' },
-				{ opacity: .2, transform: 'translateY(-15px)' },
-				{ opacity: 1, transform: 'translateY(0px)' }
+				{ opacity: 0, transform: 'translate3d(0px, -30px, 0px)' },
+				{ opacity: .2, transform: 'translate3d(0px, -15px, 0px)' },
+				{ opacity: 1, transform: 'translate3d(0px, 0px, 0px)' }
 			], {
 				delay: 250,
 				duration: 500,
@@ -77,8 +77,8 @@ Choreo.define('article.home', {
 			}),
 			
 			Choreo.Animate.step(cache.nav.children, [
-				{ opacity: 0, transform: 'scale(0.9)' },
-				{ opacity: 1, transform: 'scale(1)' }
+				{ opacity: 0, transform: 'scale(0.9) translateZ(0px)' },
+				{ opacity: 1, transform: 'scale(1) translateZ(0px)' }
 			], {
 				origin: 'left top',
 				delay: 700,
@@ -147,8 +147,8 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 			
 			Choreo.Animate.evade(cache.tapped, cache.tiles, function(element) {
 				return new KeyframeEffect(element, [
-					{ opacity: 1, transform: 'translate(0px, 0px) scale(1)' },
-					{ opacity: 0, transform: 'translate(' + (this.direction.x*40) + 'px, ' + (this.direction.y*40) + 'px) scale(0.9)'}
+					{ opacity: 1, transform: 'translate3d(0px, 0px, 0px) scale(1)' },
+					{ opacity: 0, transform: 'translate3d(' + (this.direction.x*40) + 'px, ' + (this.direction.y*40) + 'px, 0px) scale(0.9)'}
 				], {
 					duration: 300,
 					fill: 'both',
@@ -157,8 +157,8 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 			}),
 			
 			new KeyframeEffect(cache.tapped, [
-				{ transform: 'translate(0px, 0px) scale(1, 1)' },
-				{ transform: 'translate(' + delta.left + 'px, ' + delta.top + 'px) scale(' + delta.width + ', ' + delta.height + ')' }
+				{ transform: 'translate3d(0px, 0px, 0px) scale(1, 1)' },
+				{ transform: 'translate3d(' + delta.left + 'px, ' + delta.top + 'px, 0px) scale(' + delta.width + ', ' + delta.height + ')' }
 			], {
 // 				delay: 200,
 				duration: 600,
