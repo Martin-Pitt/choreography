@@ -44,7 +44,7 @@ Choreo.on('postprocess', function(player) {
 
 
 /// Setup our default preset
-Choreo.define('default', Choreo.Preset.fade);
+Choreo.define('default', Choreo.Preset.fade({ duration: 200 }));
 
 
 /// Define animation for our introduction view
@@ -98,14 +98,18 @@ Choreo.define('article.home', {
 
 
 /// They are really truly just CSS selectors, so we can use commas for multiple selections
-// Choreo.define({ from: 'article.home', to: 'article.why, article.docs, article.downoad' }, Choreo.Preset.fade);
+// Choreo.define({ from: 'article.home', to: 'article.why, article.docs, article.downoad' }, Choreo.Preset.fade({ duration: 200 }));
 
 
 
 Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 	constructor: function(cache) {
 		cache.nav = this.from.querySelector('nav');
-		cache.tapped = this.from.querySelector('.tile[data-view="article.' + this.to.className.replace('view ', '') + '"]');
+		
+		// Need to come up with a better strategy/workflow of shared element identification (tapped = shared element)
+		// Generally I leave it up to you, the user, instead of Choreography trying to do weird stuff itself
+		cache.tapped = this.from.querySelector('.tile' + this._to.replace('article', ''));
+		
 		cache.tiles = Array.prototype.slice.call(this.from.querySelectorAll('.tile'));
 		cache.tiles.splice(cache.tiles.indexOf(cache.tapped), 1);
 		cache.fromHeader = this.from.querySelector('header');
@@ -181,26 +185,54 @@ Choreo.define({ from: 'article.home', to: 'article:not(.home)' }, {
 
 
 
-// Choreo.define({ from: 'article.home', to: 'article.why' }, Choreo.Preset.fade);
+var currentView = null;
+var router = Grapnel.listen({
+	'': function(req) { Choreo.graph(currentView, currentView = 'article.home') },
+	'/examples': function() { Choreo.graph(currentView, currentView = 'article.examples') },
+	'/docs': function() { Choreo.graph(currentView, currentView = 'article.docs') },
+	'/tools': function() { Choreo.graph(currentView, currentView = 'article.tools') },
+	'/faq': function() { Choreo.graph(currentView, currentView = 'article.faq') },
+	'/articles/choreography.js': function(req) { Choreo.graph(currentView, currentView = 'article.what') }
+
+});
+
+
+if(window.ga)
+{
+	router.on('navigate', function(event){
+		ga('send', 'pageview', {
+			page: this.fragment.get()
+		});
+	});
+}
 
 
 
 /// Kick off application with our first view
-Choreo.graph('article.home');
+// Choreo.graph('article.home');
+
+
 
 
 /// Catching page-to-page interaction
-var currentView = 'article.home';
 
 tapDat(document, function isDataView(event) {
 	var element = event.target.closest('a, button');
-	return element && element.matches('[data-view]');
+	return element && element.matches('[data-path]');
 }, function onDataView(event) {
 	event.preventDefault();
 	
 	var element = event.target.closest('a, button');
 	element.classList.add('active');
-	var view = element.dataset.view;
+	element.blur();
+	
+	router.navigate(element.dataset.path);
+	
+	element.classList.remove('active');
+	
+
+/*
+	var view = element.dataset.path;
 	
 	// Google Analytics present? Then track the pageview
 	if(window.ga)
@@ -219,6 +251,7 @@ tapDat(document, function isDataView(event) {
 	currentView = view;
 	element.classList.remove('active');
 	element.blur();
+*/
 });
 
 

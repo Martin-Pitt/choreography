@@ -194,7 +194,7 @@ var Choreo = {
 				var iter = this.list.length;
 				while(iter-->0) {
 					var transit = this.list[iter];
-					if(to.matches(transit.to) && (from? from.matches(transit.from) : true)) return transit.transition;
+					if(to.matches(transit.to) && (from? from.matches(transit.from) : !transit.from)) return transit.transition;
 				}
 			}
 			else if(typeof to === 'string')
